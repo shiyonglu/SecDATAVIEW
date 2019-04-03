@@ -1,0 +1,23 @@
+{
+  "confidentialTasks":
+    [
+      {
+        "taskName" : "Extraction"
+      },
+      {
+        "taskName" : "Partitioner"
+      },
+      {
+        "taskName" : "SplitDataOnePort"
+      },
+      {
+        "taskName" : "Algorithm1"
+      },
+      {
+        "taskName" : "Algorithm2"
+      },
+      {
+        "taskName" : "Evaluation"
+      }
+    ]
+}
