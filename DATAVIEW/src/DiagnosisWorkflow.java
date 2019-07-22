@@ -37,11 +37,11 @@ public class DiagnosisWorkflow extends Workflow {
 		addEdge("parameter.enc",T4,2);
 		addEdge(T4,0,T5,1);
 		
-		addEdge("parameter.txt",T5,3);
+		addEdge("parameter.enc",T5,3);
 		addEdge(T5,0,T6,0);
 		
 
-	    addEdge(T6, 0, "output0.txt");	    
+	    addEdge(T6, 0, "output0.enc");	    
 	}
 		
 }

@@ -62,7 +62,10 @@ public class Evaluation extends Task{
 		
 	
 		// step 3: write to the output port
-		outs[0].write1(output0);	
+		outs[0].write1(output0);
+//		172.30.17.203
+//		FileTransfer.send("/home/ubuntu/output0.txt", "/home/ubuntu/", "diagnosisResult.txt", "172.30.18.183");
+//		FileTransfer.send("/home/ubuntu/output0.txt", "/home/ishtiaq/", "diagnosisResult.txt", "172.30.17.203", "ishtiaq", "123", 22);
 		
 	}
 
