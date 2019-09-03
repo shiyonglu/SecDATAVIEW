@@ -23,7 +23,7 @@ public class DiagnosisWorkflow extends Workflow {
 		
 		
 		// add edges
-		addEdge("originalInput.enc", T1, 0);
+		addEdge("sample.enc", T1, 0);
 		addEdge(T1, 0, T2, 0);
 		
 		addEdge(T2,0,T3,0);

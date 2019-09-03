@@ -13,7 +13,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import dataview.workflowexecutors.TaskExecutor;
+import dataview.workflowexecutor.TaskExecutor;
 
 public class OutputPort extends Port{
 
@@ -38,7 +38,7 @@ public class OutputPort extends Port{
 					Dataview.debugger.logException(e);
 				}
 				String cypherTextName = location;
-				if (dwcrypto.encryptFile(cypherTextName, "abc", plainTextName, "abc") == 0) {
+				if (dwcrypto.encryptFile(cypherTextName, TaskExecutor.associatedData, plainTextName, TaskExecutor.secretKey) == 0) {
 					Dataview.debugger.logSuccessfulMessage("Successful encryption");
 				} else {
 					Dataview.debugger.logErrorMessage("encryption is broken");

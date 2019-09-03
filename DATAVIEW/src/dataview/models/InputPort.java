@@ -11,7 +11,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import dataview.workflowexecutors.TaskExecutor;
+import dataview.workflowexecutor.TaskExecutor;
 
 public class InputPort extends Port{
 
@@ -44,7 +44,7 @@ public class InputPort extends Port{
 			DWCRYPTO dwcrypto = new DWCRYPTO();
 			String plainTextName = this.getFileName().replace(".enc", ".txt");
 			try {
-				if (dwcrypto.decryptFile(this.getFileName(), plainTextName, "abc", "abc") == 0) {
+				if (dwcrypto.decryptFile(this.getFileName(), plainTextName, TaskExecutor.associatedData, TaskExecutor.secretKey) == 0) {
 					Dataview.debugger.logSuccessfulMessage("The file is decrypted successfully");
 					f = new DATAVIEW_BigFile(plainTextName); // input file object is changed to plain text by decryption and instantiated. 
 				} else {

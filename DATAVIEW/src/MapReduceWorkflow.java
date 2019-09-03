@@ -39,7 +39,7 @@ public class MapReduceWorkflow extends Workflow {
 		Task T16 = addTask("FinalResult");
 
 
-		addEdge("originalInput.enc", T1, 0);
+		addEdge("1500000.txt", T1, 0);
 		addEdge(T1, 0, T2, 0);
 		addEdge(T1, 1, T3, 0);
 		addEdge(T1, 2, T4, 0);
@@ -90,7 +90,7 @@ public class MapReduceWorkflow extends Workflow {
 
 
 		// FinalResult
-		addEdge(T16, 0, "workflowOutput.enc");
+		addEdge(T16, 0, "workflowOutput.out");
 
 
 

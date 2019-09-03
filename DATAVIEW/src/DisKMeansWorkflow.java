@@ -7,8 +7,8 @@ import dataview.models.Workflow;
 public class DisKMeansWorkflow extends Workflow {
 
 	public static int K = 2; // number of clusters
-	public static int M = 2; // number splitting datasets/ partitions
-	public static int iteration = 2; // number of iteration
+	public static int M = 1; // number splitting datasets/ partitions
+	public static int iteration = 1; // number of iteration
 
 
 	public DisKMeansWorkflow() {

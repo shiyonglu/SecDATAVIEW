@@ -31,7 +31,7 @@ public class Shuffling extends Task{
 		for (int j = 0; j < ins.length; j++) {
 			
 			String input0 = (String) ins[j].read1();
-			Dataview.debugger.logSuccessfulMessage("here is the input0" + input0);
+//			Dataview.debugger.logSuccessfulMessage("here is the input0" + input0);
 
 			if (input0 != null && !input0.isEmpty()) {
 				String lines[] = input0.split("\\r?\\n");

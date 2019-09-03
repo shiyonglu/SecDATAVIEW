@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/bcpg-jdk15on-1.60.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/bcpkix-jdk15on-1.60.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/bcprov-jdk15on-1.60.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/mina-core-2.0.19.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/netty-buffer-4.1.29.Final.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/netty-codec-4.1.29.Final.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/netty-common-4.1.29.Final.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/netty-handler-4.1.29.Final.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/netty-resolver-4.1.29.Final.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/netty-transport-4.1.29.Final.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/slf4j-jdk14-1.7.25.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/sshd-cli-2.1.0.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/sshd-common-2.1.0.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/sshd-core-2.1.0.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/sshd-mina-2.1.0.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/sshd-netty-2.1.0.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/sshd-putty-2.1.0.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/sshd-scp-2.1.0.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/sshd-sftp-2.1.0.jar"/>
+	<classpathentry kind="lib" path="/home/mofrad-s/java-workspace/SSHD/SSHDLib/apache-sshd-2.1.0 2/lib/tomcat-apr-5.5.23.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

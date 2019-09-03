@@ -26,16 +26,16 @@ public class FinalResult extends Task{
 		// step 1: read from the input ports
 		String result = "";
 		String input0 = (String) ins[0].read1();
-		Dataview.debugger.logSuccessfulMessage("here is the input0" + input0);
+//		Dataview.debugger.logSuccessfulMessage("here is the input0" + input0);
 
 		String input1 = (String) ins[1].read1();
-		Dataview.debugger.logSuccessfulMessage("here is the input0" + input1);
+//		Dataview.debugger.logSuccessfulMessage("here is the input0" + input1);
 		
 		String input2 = (String) ins[2].read1();
-		Dataview.debugger.logSuccessfulMessage("here is the input0" + input2);
+//		Dataview.debugger.logSuccessfulMessage("here is the input0" + input2);
 
 		String input3 = (String) ins[3].read1();
-		Dataview.debugger.logSuccessfulMessage("here is the input0" + input3);
+//		Dataview.debugger.logSuccessfulMessage("here is the input0" + input3);
 
 		ArrayList<String> list = new ArrayList<>();
 		

@@ -1,7 +1,7 @@
 
 import dataview.models.*;
-import dataview.workflowexecutors.WorkflowExecutor;
-import dataview.workflowexecutors.WorkflowExecutorAlpha;
+import dataview.workflowexecutor.WorkflowExecutor;
+import dataview.workflowexecutor.WorkflowExecutor_Alpha;
 
 import java.util.ArrayList;
 /**
@@ -45,7 +45,7 @@ public class DriverA_MultiEdge {
 		Dataview.executionTimes = new ArrayList<Long>();
 		for (int i = 1; i <= sizeOfIteration; i++) {
 			Dataview.debugger.logSuccessfulMessage("Starting workflow executor for iteration " + i);
-			WorkflowExecutor workflowExecutor = new WorkflowExecutorAlpha("workflowTaskDir", "workflowLibDir", globalSchedule);
+			WorkflowExecutor workflowExecutor = new WorkflowExecutor_Alpha("workflowTaskDir", "workflowLibDir", globalSchedule);
 			workflowExecutor.execute();
 		}
 		

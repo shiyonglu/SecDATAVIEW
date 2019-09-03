@@ -18,6 +18,33 @@
       },
       {
         "taskName" : "Evaluation"
+      },
+      {
+        "taskName" : "Input1"
+      },
+      {
+        "taskName" : "Splitting1"
+      },
+      {
+        "taskName" : "Shuffling1"
+      },
+      {
+        "taskName" : "Reducing1"
+      },
+      {
+        "taskName" : "FinalResult1"
+      },
+      {
+        "taskName" : "DisKMeansInitialization"
+      },
+      {
+        "taskName" : "DisCalculateCentroidStep1"
+      },
+      {
+        "taskName" : "DisReassignCluster"
+      },
+      {
+        "taskName" : "DisCalculateCentroid"
       }
     ]
 }

@@ -5,10 +5,10 @@ import dataview.planners.WorkflowPlanner_E2C2D;
 
 import java.util.ArrayList;
 
+import dataview.workflowexecutor.WorkflowExecutor;
 import dataview.workflowexecutor.WorkflowExecutorAlphaBackup;
 import dataview.workflowexecutor.WorkflowExecutorAlphaScheild;
-import dataview.workflowexecutors.WorkflowExecutor;
-import dataview.workflowexecutors.WorkflowExecutorAlpha;
+import dataview.workflowexecutor.WorkflowExecutor_Alpha;
 /**
  * Testing the workflow scheduler
  * @author ishtiaqahmed
@@ -81,7 +81,7 @@ public class DriverMapReduce {
 		localSchedule1.addTaskSchedule(taskSchedule15);
 		localSchedule1.addTaskSchedule(taskSchedule16);
 		
-		localSchedule1.setVmType("AMD"); // SGX
+		localSchedule1.setVmType("SGX"); // SGX
 		
 		GlobalSchedule globalSchedule = new GlobalSchedule();
 		globalSchedule.addLocalSchedule(localSchedule1);
@@ -89,12 +89,12 @@ public class DriverMapReduce {
 		
 		System.out.println(globalSchedule.getSpecification());
 		
-		int sizeOfIteration = 5;
+		int sizeOfIteration = 1;
 		
 		Dataview.executionTimes = new ArrayList<Long>();
 		for (int i = 1; i <= sizeOfIteration; i++) {
 			Dataview.debugger.logSuccessfulMessage("Starting workflow executor for iteration " + i);
-			WorkflowExecutor workflowExecutor = new WorkflowExecutorAlpha("workflowTaskDir", "workflowLibDir", globalSchedule);
+			WorkflowExecutor workflowExecutor = new WorkflowExecutor_Alpha("workflowTaskDir", "workflowLibDir", globalSchedule);
 			workflowExecutor.execute();
 		}
 		

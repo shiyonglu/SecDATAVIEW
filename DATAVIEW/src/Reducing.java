@@ -22,7 +22,7 @@ public class Reducing extends Task{
 	public void run() {
 		// step 1: read from the input ports
 		String input0 = (String) ins[0].read1();
-		Dataview.debugger.logSuccessfulMessage("here is the input0" + input0);
+//		Dataview.debugger.logSuccessfulMessage("here is the input0" + input0);
 		if (input0 != null && input0.length() > 0) input0 = input0.substring(0, input0.length() - 1);
 		outs[0].write1(input0);
 		

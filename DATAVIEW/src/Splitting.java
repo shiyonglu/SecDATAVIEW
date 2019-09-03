@@ -19,7 +19,7 @@ public class Splitting extends Task{
 	public void run() {
 		// step 1: read from the input ports
 		String input0 = (String) ins[0].read1();
-		Dataview.debugger.logSuccessfulMessage("here is the input0" + input0);
+//		Dataview.debugger.logSuccessfulMessage("here is the input0" + input0);
 
 		
 		

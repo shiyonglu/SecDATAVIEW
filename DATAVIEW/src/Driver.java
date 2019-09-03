@@ -55,9 +55,9 @@ public class Driver {
 		//String plainFile = "/home/ishtiaq/Dropbox/aaaaaa-Saeid-Ishtiaq/usenix19-results/diagnosis-test/" + sizePatients + 
 			//	"/originalInput_" + sizePatients + ".txt";
 //		String plainFile = "originalInput.txt";
-		String plainFile = "/home/ishtiaq/Dropbox/aaaaaa-Saeid-Ishtiaq/usenix19-results/diagnosis-test/10000/parameter.txt";
+		String plainFile = "/home/ishtiaq/Dropbox/aaaaaa-Saeid-Ishtiaq/SECDATAVIEW_TSC/dataset/DistributedKMeans/100000/originalInput_100000.txt";
 //		String encryptedFile = "originalInput.enc";
-		String encryptedFile = "/home/ishtiaq/Dropbox/aaaaaa-Saeid-Ishtiaq/usenix19-results/diagnosis-test/10000/parameter.enc";
+		String encryptedFile = "/home/ishtiaq/Dropbox/aaaaaa-Saeid-Ishtiaq/SECDATAVIEW_TSC/dataset/DistributedKMeans/100000/originalInput.enc";
 		//String encryptedFile = "/home/ishtiaq/Dropbox/aaaaaa-Saeid-Ishtiaq/usenix19-results/diagnosis-test/" + sizePatients + 
 			//	"/originalInput.enc";
 		
