@@ -641,42 +641,60 @@ public class TaskExecutor {
 	
 	// fileTransfer()
 	public static void send (String SourceDIR, String DestinationDIR, String newFileName, String strHostName) {
-	    String SFTPHOST = strHostName;
-	    int SFTPPORT = 8000;
-	    String SFTPUSER = "ubuntu";
-	    String SFTPPASS = "dataview";
-	    String SFTPWORKINGDIR = DestinationDIR;
+		boolean isFoundException = true;
+		int countIteration = 15;
+		System.out.println("Trying to send file : " + SourceDIR + " to " + strHostName );
+		while(isFoundException && countIteration-- > 0) {
+			String SFTPHOST = strHostName;
+		    int SFTPPORT = 8000;
+		    String SFTPUSER = "ubuntu";
+		    String SFTPPASS = "dataview";
+		    String SFTPWORKINGDIR = DestinationDIR;
 
-	    Session session = null;
-	    Channel channel = null;
-	    ChannelSftp channelSftp = null;
-	    System.out.println("preparing the host information for sftp.");
+		    Session session = null;
+		    Channel channel = null;
+		    ChannelSftp channelSftp = null;
+		    System.out.println("preparing the host information for sftp.");
 
-	    try {
-	        JSch jsch = new JSch();
-	        session = jsch.getSession(SFTPUSER, SFTPHOST, SFTPPORT);
-	        session.setPassword(SFTPPASS);
-	        java.util.Properties config = new java.util.Properties();
-	        config.put("StrictHostKeyChecking", "no");
-	        session.setConfig(config);
-	        session.connect();
-	        System.out.println("Host connected.");
-	        channel = session.openChannel("sftp");
-	        channel.connect();
-	        System.out.println("sftp channel opened and connected.");
-	        channelSftp = (ChannelSftp) channel;
-	        channelSftp.cd(SFTPWORKINGDIR);
-	        File f = new File(SourceDIR);
-	        channelSftp.put(new FileInputStream(f), newFileName);
-	    } catch (Exception ex) {
-	        System.out.println("Exception found while tranfer the response. : " + ex);
-	    } finally {
-	        channelSftp.exit();
-	        System.out.println("sftp Channel exited.");
-	        channel.disconnect();
-	        System.out.println("Channel disconnected.");
-	        session.disconnect();
-	        System.out.println("Host Session disconnected.");
-	    }
+		    try {
+		        JSch jsch = new JSch();
+		        session = jsch.getSession(SFTPUSER, SFTPHOST, SFTPPORT);
+		        session.setPassword(SFTPPASS);
+		        java.util.Properties config = new java.util.Properties();
+		        config.put("StrictHostKeyChecking", "no");
+		        session.setConfig(config);
+		        session.connect();
+		        System.out.println("Host connected.");
+		        channel = session.openChannel("sftp");
+		        channel.connect();
+		        System.out.println("sftp channel opened and connected.");
+		        channelSftp = (ChannelSftp) channel;
+		        channelSftp.cd(SFTPWORKINGDIR);
+		        File f = new File(SourceDIR);
+		        channelSftp.put(new FileInputStream(f), newFileName);
+		        isFoundException = false;
+		    } catch (Exception e) {
+		        System.out.println("Exception found while tranfer the response. : " + e);
+		        Dataview.debugger.logException(e);
+				Dataview.debugger.logErrorMessage("File sending exception is caught " + e + " host: " + strHostName);
+				Dataview.debugger.logErrorMessage("Trying to resend " + SourceDIR);
+				isFoundException = true;
+				try {
+					Dataview.debugger.logSuccessfulMessage("Waiting for 15 seconds to resend the file");
+					Thread.sleep(15000);
+				} catch (InterruptedException ex) {
+					e.printStackTrace();
+				}
+		    } finally {
+		        channelSftp.exit();
+		        System.out.println("sftp Channel exited.");
+		        channel.disconnect();
+		        System.out.println("Channel disconnected.");
+		        session.disconnect();
+		        System.out.println("Host Session disconnected.");
+		    }
+		}
+		
+	    
 	}   
 }

@@ -19,6 +19,7 @@
 
 
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -211,8 +212,17 @@ public class SshServerMain extends SshServerCliSupport {
         System.err.println("Starting SSHD on port " + port);
         sshd.start();
         //Thread.sleep(Long.MAX_VALUE);
-        Thread.sleep(3*1000);
-        System.err.println("Exiting after 2 minutes!");
+        while(true) {
+        	File file1 = new File("/home/ubuntu/CodeProvisioner.jar");
+        	File file2 = new File("/home/ubuntu/codeprovisioner.jks");
+        	File file3 = new File("/home/ubuntu/TaskExecutor.enc");
+
+        	if (file1.exists() && file2.exists() && file3.exists()) {
+        	break;
+        	}
+        	System.out.println("Waiting for 30 secods to retrieve all necessary files.");
+        	Thread.sleep(30000);
+        	}
         
         System.out.println("Starting CodeProvisioner by java reflection");
         sshd.close();

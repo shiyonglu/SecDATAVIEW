@@ -20,16 +20,16 @@
         "taskName" : "Evaluation"
       },
       {
-        "taskName" : "Input1"
+        "taskName" : "Input"
       },
       {
-        "taskName" : "Splitting1"
+        "taskName" : "Splitting"
       },
       {
-        "taskName" : "Shuffling1"
+        "taskName" : "Shuffling"
       },
       {
-        "taskName" : "Reducing1"
+        "taskName" : "Reducing"
       },
       {
         "taskName" : "FinalResult1"

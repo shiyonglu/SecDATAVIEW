@@ -129,72 +129,105 @@ public class VMProvisionerAMD extends VMProvisioner{
 	
 	public void copyFileVMhost(String SourceDIR, String DestinationDIR, String strHostName) {
 
-		String SFTPHOST = strHostName;
-		int SFTPPORT = 22;
-		String SFTPUSER = WorkflowExecutor_Alpha.AMD_SERVER_USER_NAME;
-		String SFTPWORKINGDIR = DestinationDIR;
-		String FILETOTRANSFER = SourceDIR;
-		Session session = null;
-		Channel channel = null;
-		ChannelSftp channelSftp = null;
-		try {
-			JSch jsch = new JSch();
-			//		jsch.addIdentity(pemFileLocation);
-			session = jsch.getSession(SFTPUSER, SFTPHOST, SFTPPORT);
-			java.util.Properties config = new java.util.Properties();
-			config.put("StrictHostKeyChecking", "no");
-			session.setPassword(WorkflowExecutor_Alpha.AMD_SERVER_PASSWORD);
-			session.setConfig(config);
-			session.setPort(SFTPPORT);
-			session.connect();
-			channel = session.openChannel("sftp");
-			channel.connect();
-			channelSftp = (ChannelSftp) channel;
-			channelSftp.cd(SFTPWORKINGDIR);
-			File f = new File(FILETOTRANSFER);
-			channelSftp.put(new FileInputStream(f), f.getName());
-			System.out.println("Sending file " + f.getName() + " is successful.");
-			channel.disconnect();
-			session.disconnect();
-		} catch (Exception ex) {
-			Dataview.debugger.logException(ex);
+		boolean isFoundException = true;
+		int countIteration = 15;
+		System.out.println("Trying to send file : " + SourceDIR + " to " + strHostName );
+		while(isFoundException && countIteration-- > 0) {
+			String SFTPHOST = strHostName;
+			int SFTPPORT = 22;
+			String SFTPUSER = WorkflowExecutor_Alpha.AMD_SERVER_USER_NAME;
+			String SFTPWORKINGDIR = DestinationDIR;
+			String FILETOTRANSFER = SourceDIR;
+			Session session = null;
+			Channel channel = null;
+			ChannelSftp channelSftp = null;
+			try {
+				JSch jsch = new JSch();
+				//		jsch.addIdentity(pemFileLocation);
+				session = jsch.getSession(SFTPUSER, SFTPHOST, SFTPPORT);
+				java.util.Properties config = new java.util.Properties();
+				config.put("StrictHostKeyChecking", "no");
+				session.setPassword(WorkflowExecutor_Alpha.AMD_SERVER_PASSWORD);
+				session.setConfig(config);
+				session.setPort(SFTPPORT);
+				session.connect();
+				channel = session.openChannel("sftp");
+				channel.connect();
+				channelSftp = (ChannelSftp) channel;
+				channelSftp.cd(SFTPWORKINGDIR);
+				File f = new File(FILETOTRANSFER);
+				channelSftp.put(new FileInputStream(f), f.getName());
+				System.out.println("Sending file " + f.getName() + " is successful.");
+				channel.disconnect();
+				session.disconnect();
+				isFoundException = false;
+			} catch (Exception e) {
+				Dataview.debugger.logException(e);
+				Dataview.debugger.logErrorMessage("File sending exception is caught " + e + " host: " + strHostName);
+				Dataview.debugger.logErrorMessage("Trying to resend " + SourceDIR);
+				isFoundException = true;
+				try {
+					Dataview.debugger.logSuccessfulMessage("Waiting for 15 seconds to resend the file");
+					Thread.sleep(15000);
+				} catch (InterruptedException ex) {
+					e.printStackTrace();
+				}
+			}
 		}
+		
+		
 	}
 
 	
 	@Override
 	void copyFileVM(String SourceDIR, String DestinationDIR, String strHostName) {
 
-		String SFTPHOST = strHostName;
-		int SFTPPORT = 8000;
-		String SFTPUSER = "ubuntu";
-		String SFTPWORKINGDIR = DestinationDIR;
-		String FILETOTRANSFER = SourceDIR;
-		Session session = null;
-		Channel channel = null;
-		ChannelSftp channelSftp = null;
-		try {
-			JSch jsch = new JSch();
-			//		jsch.addIdentity(pemFileLocation);
-			session = jsch.getSession(SFTPUSER, SFTPHOST, SFTPPORT);
-			java.util.Properties config = new java.util.Properties();
-			config.put("StrictHostKeyChecking", "no");
-			session.setPassword("dataview");
-			session.setConfig(config);
-			session.setPort(8000);
-			session.connect();
-			channel = session.openChannel("sftp");
-			channel.connect();
-			channelSftp = (ChannelSftp) channel;
-			channelSftp.cd(SFTPWORKINGDIR);
-			File f = new File(FILETOTRANSFER);
-			channelSftp.put(new FileInputStream(f), f.getName());
-			System.out.println("Sending file " + f.getName() + " is successful.");
-			channel.disconnect();
-			session.disconnect();
-		} catch (Exception ex) {
-			Dataview.debugger.logException(ex);
+		boolean isFoundException = true;
+		int countIteration = 15;
+		System.out.println("Trying to send file : " + SourceDIR + " to " + strHostName );
+		while(isFoundException && countIteration-- > 0) {
+			String SFTPHOST = strHostName;
+			int SFTPPORT = 8000;
+			String SFTPUSER = "ubuntu";
+			String SFTPWORKINGDIR = DestinationDIR;
+			String FILETOTRANSFER = SourceDIR;
+			Session session = null;
+			Channel channel = null;
+			ChannelSftp channelSftp = null;
+			try {
+				JSch jsch = new JSch();
+				//		jsch.addIdentity(pemFileLocation);
+				session = jsch.getSession(SFTPUSER, SFTPHOST, SFTPPORT);
+				java.util.Properties config = new java.util.Properties();
+				config.put("StrictHostKeyChecking", "no");
+				session.setPassword("dataview");
+				session.setConfig(config);
+				session.setPort(8000);
+				session.connect();
+				channel = session.openChannel("sftp");
+				channel.connect();
+				channelSftp = (ChannelSftp) channel;
+				channelSftp.cd(SFTPWORKINGDIR);
+				File f = new File(FILETOTRANSFER);
+				channelSftp.put(new FileInputStream(f), f.getName());
+				System.out.println("Sending file " + f.getName() + " is successful.");
+				channel.disconnect();
+				session.disconnect();
+				isFoundException = false;
+			} catch (Exception e) {
+				Dataview.debugger.logException(e);
+				Dataview.debugger.logErrorMessage("File sending exception is caught " + e + " host: " + strHostName);
+				Dataview.debugger.logErrorMessage("Trying to resend " + SourceDIR);
+				isFoundException = true;
+				try {
+					Dataview.debugger.logSuccessfulMessage("Waiting for 15 seconds to resend the file");
+					Thread.sleep(15000);
+				} catch (InterruptedException ex) {
+					e.printStackTrace();
+				}
+			}
 		}
+		
 	}
 
 	@Override

@@ -46,7 +46,7 @@ public class DriverDiagnosisNew {
 		
 		LocalSchedule localSchedule1 = new LocalSchedule();
 		localSchedule1.addTaskSchedule(taskSchedule1);
-		localSchedule1.setVmType("AMD"); 
+		localSchedule1.setVmType("SGX"); 
 		
 		localSchedule1.addTaskSchedule(taskSchedule2);
 		
@@ -55,15 +55,15 @@ public class DriverDiagnosisNew {
 		localSchedule1.addTaskSchedule(taskSchedule4);
 		
 		
-//		LocalSchedule localSchedule2 = new LocalSchedule();
-//		localSchedule2.setVmType("SGX");
+		LocalSchedule localSchedule2 = new LocalSchedule();
+		localSchedule2.setVmType("AMD");
 		
-		localSchedule1.addTaskSchedule(taskSchedule5);
-		localSchedule1.addTaskSchedule(taskSchedule6);
+		localSchedule2.addTaskSchedule(taskSchedule5);
+		localSchedule2.addTaskSchedule(taskSchedule6);
 		
 		GlobalSchedule globalSchedule = new GlobalSchedule();
 		globalSchedule.addLocalSchedule(localSchedule1);
-//		globalSchedule.addLocalSchedule(localSchedule2);
+		globalSchedule.addLocalSchedule(localSchedule2);
 
 		System.out.println(globalSchedule.getSpecification());
 		

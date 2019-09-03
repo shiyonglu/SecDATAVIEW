@@ -331,8 +331,16 @@ public class WorkflowExecutor_Alpha extends WorkflowExecutor{
 					sgxProvisioner.copyFileVMhost(SGX_IMG_SRC_FILE, SGX_IMG_DST_FOLDER, localSchedule.getIP());
 					sgxProvisioner.copyFileVMhost(SGX_SCRIPT_SRC_FILE, SGX_SCRIPT_DST_FOLDER, localSchedule.getIP());
 					sgxProvisioner.executeCommands(localSchedule.getIP(), SGX_SEV_AWS_USER_NAME,  SGX_SEV_AWS_USER_PASSWORD, sgxProvisioner.getBashCommands());
+					try {
+						System.out.println("System is halt after running the execute commannds of SGX_SCRIPT for 90 seconds");
+						Thread.sleep(90*1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 				} else if (localSchedule.getVmType().equals(AMD)){
-					//amdProvisioner.copyFileVMhost(AMD_IMG_SRC_FILE, AMD_IMG_DST_FOLDER, AMD_SERVER_IP);
+					amdProvisioner.copyFileVMhost(AMD_IMG_SRC_FILE, AMD_IMG_DST_FOLDER, AMD_SERVER_IP);
 					amdProvisioner.copyFileVMhost(AMD_SCRIPT_SRC_FILE, AMD_SCRIPT_DST_FOLDER, AMD_SERVER_IP);
 					
 					Thread executeCommandHostThread = new Thread(new Runnable() {

@@ -76,8 +76,8 @@ public class VMProvisionerAWS extends VMProvisioner{
 	
 	public VMProvisionerAWS() {
 		Dataview.debugger.logSuccessfulMessage("VMProvisioner constructor is called with instance number");
-		accessKey = "AKIAV5AOJJWF445MIYLY";
-		secretKey = "QGSbLD1gSuWOtHbJdqpwd+jOQ9kp1hSH6RUniWrE"; 
+		accessKey = "YOUR_ACCESS_KEY";
+		secretKey = "YOUR_SECRET_KEY"; 
 		autoGenKeyName = "dataview1";
 		autoGenGroupName = "dataview1";
 		imageID = "ami-0c6014e1ee2dcd28c"; //saeid
