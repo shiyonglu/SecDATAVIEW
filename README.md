@@ -219,11 +219,13 @@ keep the value of ```AMD_SERVER_USER_NAME```  as root. SecDATAVIEW requires root
 ```
 public static final String AMD_SERVER_USER_NAME = "root";
 ```
-update the value of ```AMD_SERVER_PASSWORD```  for 'root' account in the AMD server   
+Update the value of ```AMD_SERVER_PASSWORD```  for 'root' account in the AMD server   
 
 ```
 public static final String AMD_SERVER_PASSWORD = "12345678";
 ```
+Update all worker's script file path values in the ```/machineScript/AMD/vm1-launch-dataview-sev.sh```  and  ```/machineScript/SGX/sgx-lkl-java-encrypted-dataview.sh```  based on SGX and AMD folders and user credentials settings.  
+
 CryptoTools instructions
 ------------------------
 Put all the workflow input files in ```source_folder_location``` and then run the ```CryptoTool``` by the following format
