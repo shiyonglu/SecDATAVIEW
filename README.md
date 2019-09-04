@@ -54,8 +54,8 @@ sudo iptables -t nat -A POSTROUTING -s 10.0.1.0/24 ! -d 10.0.1.0/24 -j MASQUERAD
 
 #Rules to update the FORWARD table for packet forwarding
 
-sudo iptables -A FORWARD -s 10.0.1.0/24  --ctstate NEW,RELATED,ESTABLISHED -j ACCEPT
-sudo iptables -A FORWARD -d 10.0.1.0/24  --ctstate NEW,RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -I FORWARD -m state -d 10.0.1.0/24 --state NEW,RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -I FORWARD -m state -s 10.0.1.0/24 --state NEW,RELATED,ESTABLISHED -j ACCEPT
 
 #You must enable the packet forwarding in the system module unless packet routing doesn't work.
 sudo sysctl -w net.ipv4.ip_forward=1
@@ -126,7 +126,9 @@ sudo apt-install git
 
 4- Clone the SecDATAVIEW project from git on your master node. 
 
-https://github.com/shiyonglu/SECDATAVIEW.git
+```
+git clone https://github.com/Saeid2k/secureDW.git
+```
 
 5- Create a new workspace on your Eclipse IDE
 
@@ -134,7 +136,7 @@ https://github.com/shiyonglu/SECDATAVIEW.git
 
 7- Update your workflow
 
-8- Update the config.txt file in confidentialIinfo folder inside SGX for enlisting all the confidential tasks in the following format
+8- Update the ```config.txt``` file in ```confidentialIinfo``` folder enlisting all the confidential tasks in the following format
 ```
 {
   "confidentialTasks":
@@ -148,11 +150,11 @@ https://github.com/shiyonglu/SECDATAVIEW.git
     ]
 }
 ```
-9- Make the input dataset (for confidential tasks) encrypted by the provided CryptoTools application.
+9- Encrypt the input dataset (for confidential tasks) with the provided ```CryptoTools``` application.
 
-10- Put the necessary input files in workflowDataDir.
+10- Put the workflow input files in ```workflowDataDir```folder.
 
-11- Update the IP addresses for SEV and SGX in IPPool.txt, that is located in workflowLibDir for SGX or AMD machines, in the following format
+11- Update the IP addresses for SEV and SGX in ```IPPool.txt```, that is located in ```workflowLibDir``` for SGX and AMD machines, in the following format
 ```
 {
   "IPPool":
@@ -175,7 +177,7 @@ https://github.com/shiyonglu/SECDATAVIEW.git
   
   12.2- Overwrite your task in run() method. 
   
-13. Export the executable jar TaskExecutor.jar to confidentialInfo folder by selecting TaskExecutor.java file. This executable jar file should be created with Eclipse IDE.
+13. Export the executable jar ```TaskExecutor.jar``` to ```confidentialInfo``` folder by selecting ```TaskExecutor.java``` file. This executable jar file should be created with Eclipse IDE.
 
 14. Run the corresponding driver class to start the WorkflowExecutor.    
 
@@ -183,18 +185,21 @@ https://github.com/shiyonglu/SECDATAVIEW.git
 
 Setting up SecDATAVIEW master node:
 -----------------------------------
-1- Put all the input files in source_folder_location and then run the CryptoTool by the following format
+1- Put all the input files in ```source_folder_location``` and then run the ```CryptoTool``` by the following format
 ```
 java -jar CryptoTool.jar "enc" "associated_data" "secret_key" "source_folder_location" "destination_folder_location"
 ```
 The parementer order are as follows:``` "mode" "secret_Key" "associated_data" "source_folder_location" "destination_folder_location"```. The "mode" is consisted with two types: a) "enc" b) "dec"
 
 
-Running Diagnosis Recommendation Workflow: (Example of hybrid workflow; SGX and SEV workers)
+Sample Workflows:
+-----------------
+
+1- Running Diagnosis Recommendation Workflow: (Example of hybrid workflow; SGX and SEV workers)
 -------------------------------------------
-1- Import the SecDATAVIEW project into Eclipse IDE and run the DriverDiagnosisNew.java file as a driver class for Diagnosis Recommendation Workflow. This driver class is invoked with a SGX and a SEV machines. Since Diagnosis Recommendation Workflow involves with six tasks, the first four tasks as assigned to SGX machines and the rest of the tasks are allocated to an SEV machines. The output file for this workflow will be assigned to the machine that is associated with the last tasks "Evaluation".
+1- Import the SecDATAVIEW project into Eclipse IDE and execute the ```DriverDiagnosisNew.java``` file as a driver class for Diagnosis Recommendation Workflow. This driver class is invoked with a SGX and a SEV machines. Since Diagnosis Recommendation Workflow involves with six tasks, the first four tasks are assigned to SGX machines and the rest of the tasks are allocated to an SEV machines. The output file for this workflow will be assigned to the machine that is associated with the last tasks "Evaluation".
 
 
-Running Word Count Workflow (Map/Reduce) Workflow: (Example of SGX only workflow)
+2- Running Word Count Workflow (Map/Reduce) Workflow: (Example of SGX only workflow)
 ---------------------------------------------------
-1- Import the SecDATAVIEW project into Eclipse IDE and run the DriverMapReduce.java file as a driver class for Word Count Workflow. All the tasks associated with this workflow is configured to assigned to only one SGX machine. 
+1- Import the SecDATAVIEW project into Eclipse IDE and execute the ```DriverMapReduce.java``` file as a driver class for Word Count Workflow. All the tasks associated with this workflow is configured to assigned to only one SGX machine. 
