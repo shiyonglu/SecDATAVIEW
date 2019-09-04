@@ -8,8 +8,8 @@ Prerequisites
 -------------
 SecDATAVIEW has been tested on Ubuntu 16.04 LTS for SGX worker nodes and 18.04 LTS for SEV worker node. 
 
-Setting up the SGX worker node:
--------------------------------
+Setting up the SGX worker node
+------------------------------
 On every SGX worker node, please install Ubuntu 16.04 LTS then follow the instruction below.
 
 1- Install the Intel SGX driver https://github.com/01org/linux-sgx-driver is required. 
@@ -18,15 +18,15 @@ We have tested SecDATAVIEW with driver versions 2.0.
 2- Install the SGX-LKL Library OS from https://github.com/lsds/sgx-lkl build it in hardware mode and sign the enclave following its instruction; make sure you can run the sample java application provided with SGX-LKL library OS.
 
 3-Instal OpenSSH-SERVER and make sure you can make an ssh connection to your SGX machine.
-sudo apt get install openssh-server
+```sudo apt get install openssh-server
 ssh <your user name>@<Your SGX server ip> 
-
+```
 4- Download the pre-created sgx-lkl disk image from the link below and save the disk image in the SecDATAVIEW Master node.
  https://www.dropbox.com/sh/hywa7du0sr70nec/AABAyHqD_4tPYXVUNdw2bQAEa?dl=0
 
 
 
-Networking support for SGX worker nodes
+Networking support for SGX worker node
 ---------------------------------------
 
 In order for SecDATAVIEW SGX-LKL application to send and receive packets via the network, a TAP interface is needed on the host. Besides, all the network traffic towards the worker node on TCP port 8000 and TCP port 7700 should be forwarded to the TAP interface. Create and configure the TAP interface as follows:
@@ -37,7 +37,7 @@ sudo ip tuntap add dev sgxlkl_tap0 mode tap user `whoami`
 sudo ip link set dev sgxlkl_tap0 up
 sudo ip addr add dev sgxlkl_tap0 10.0.1.254/24
 ```
-To forward the network packets, the OS iptables should be updated with the following commands
+To forward the network packets, the OS iptables should be updated with the following commands: 
 ```
 #Lets backup the OS iptables first. Keep this file to restore the iptables rules at a later time
 
@@ -61,7 +61,7 @@ sudo iptables -I FORWARD -m state -s 10.0.1.0/24 --state NEW,RELATED,ESTABLISHED
 sudo sysctl -w net.ipv4.ip_forward=1
 ```
 Setting up the SEV worker node
------------------------------
+------------------------------
 SEV worker node requires an AMD server that supports the SEV feature. SEV feature must be enabled in the BIOS of the server, and instructions provided below should be followed.
 
 1- Install and prepare the SEV HOST for the UBUNTU 18 OS by following the https://github.com/AMDESE/AMDSEV
@@ -85,8 +85,8 @@ ssh root@"Your AMD server ip"
  https://www.dropbox.com/sh/hywa7du0sr70nec/AABAyHqD_4tPYXVUNdw2bQAEa?dl=0
 
 
-Networking support for SEV worker nodes
-----------------------------------------
+Networking support for SEV worker node
+--------------------------------------
 
 In order SecDATAVIEW SEV VM to send and receive packets via the network, a TAP interface is needed on the host AMD server for every single SEV VM. The TAP interface should be bridged to the ethernet interface with internet access so that every SEV VM receives its IP addresses from the LAN DHCP server. Create and configure each TAP interface as follows:
 ```
@@ -108,7 +108,7 @@ https://gist.github.com/extremecoders-re/e8fd8a67a515fee0c873dcafc81d811c
 Setting up SecDATAVIEW master node
 -----------------------------------
 
-We have tested SecDATAVIEW master on Ubuntu 16.0.4 LTS
+We have tested SecDATAVIEW master on Ubuntu 16 LTS
 Please follow the instruction below to setup the master node.
 
 1- Install OpenJDK 1.8
@@ -120,12 +120,10 @@ sudo apt install openjdk-8-jdk
 
 3- Install git on your master node. 
 ```
-
 sudo apt-install git
 ```
 
 4- Clone the SecDATAVIEW project from git on your master node. 
-
 ```
 git clone https://github.com/Saeid2k/secureDW.git
 ```
@@ -150,11 +148,11 @@ git clone https://github.com/Saeid2k/secureDW.git
     ]
 }
 ```
-9- Encrypt the input dataset (for confidential tasks) with the provided ```CryptoTools``` application.
+9- Encrypt the workflow input dataset (for confidential tasks) with the provided ```CryptoTools``` application.
 
-10- Put the workflow input files in ```workflowDataDir```folder.
+10- Put the encrypted workflow input files in ```workflowDataDir```folder.
 
-11- Update the IP addresses for SEV and SGX in ```IPPool.txt```, that is located in ```workflowLibDir``` for SGX and AMD machines, in the following format
+11- Update the IP addresses for SEV and SGX in ```IPPool.txt```, that is located in ```workflowLibDir``` in the following format
 ```
 {
   "IPPool":
@@ -184,7 +182,7 @@ git clone https://github.com/Saeid2k/secureDW.git
 
 
 Setting up SecDATAVIEW master node
------------------------------------
+----------------------------------
 1- Update the values of the variables below in the ```WorkflowExecutor_Alfa.java``` based on the following information
 
 Update the value of ```SGX_IMG_SRC_FILE```  with the path for sgx-lkl disk image  
@@ -210,15 +208,17 @@ Update the value of ```AMD_SCRIPT_DST_FOLDER```  with the path for home folder o
 ```
 
 
-2- Put all the input files in ```source_folder_location``` and then run the ```CryptoTool``` by the following format
+CryptoTools instructions
+------------------------
+Put all the input files in ```source_folder_location``` and then run the ```CryptoTool``` by the following format
 ```
 java -jar CryptoTool.jar "enc" "associated_data" "secret_key" "source_folder_location" "destination_folder_location"
 ```
 The parementer order are as follows:``` "mode" "secret_Key" "associated_data" "source_folder_location" "destination_folder_location"```. The "mode" is consisted with two types: a) "enc" b) "dec"
 
 
-Sample Workflows:
------------------
+Sample Workflows
+----------------
 
 1- Running Diagnosis Recommendation Workflow: (Example of hybrid workflow; SGX and SEV workers)
 -----------------------------------------------------------------------------------------------
