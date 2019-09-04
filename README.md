@@ -10,18 +10,19 @@ SecDATAVIEW has been tested on Ubuntu 16.04 LTS for SGX worker nodes and 18.04 L
 
 Setting up the SGX worker node
 ------------------------------
-On every SGX worker node, please install Ubuntu 16.04 LTS then follow the instruction below.
+On every SGX worker node, install Ubuntu 16.04 LTS then follow the instruction below.
 
-1- Install the Intel SGX driver https://github.com/01org/linux-sgx-driver is required. 
+1- SecDATAVIEW default SGX server's username and password is user="ubuntu" and password="dataview" respectively. Also, SecDATAVIEW tries to send the sgx-lkl disk image and scripts into the ```/home/ubuntu``` folder in the SGX servers by default. It is recommended to create the same user credential in every sgx nodes for a smooth test of provided workflows in this repository. Also, the worker's credential setting can be updated within the SecDATAVIEW at any time.  
+2- Install the Intel SGX driver https://github.com/01org/linux-sgx-driver is required. 
 We have tested SecDATAVIEW with driver versions 2.0.
 
-2- Install the SGX-LKL Library OS from https://github.com/lsds/sgx-lkl build it in hardware mode and sign the enclave following its instruction; make sure you can run the sample java application provided with SGX-LKL library OS.
+3- Install the SGX-LKL Library OS from https://github.com/lsds/sgx-lkl build it in hardware mode and sign the enclave following its instruction; make sure you can run the sample java application provided with SGX-LKL library OS.
 
-3-Instal OpenSSH-SERVER and make sure you can make an ssh connection to your SGX machine.
+4- Instal OpenSSH-SERVER and make sure you can make an ssh connection to your SGX machine.
 ```sudo apt get install openssh-server
 ssh <your user name>@<Your SGX server ip> 
 ```
-4- Download the pre-created sgx-lkl disk image from the link below and save the disk image in the SecDATAVIEW Master node.
+5- Download the pre-created sgx-lkl disk image from the link below and save the disk image in the SecDATAVIEW Master node.
  https://www.dropbox.com/sh/hywa7du0sr70nec/AABAyHqD_4tPYXVUNdw2bQAEa?dl=0
 
 
@@ -57,7 +58,7 @@ sudo iptables -t nat -A POSTROUTING -s 10.0.1.0/24 ! -d 10.0.1.0/24 -j MASQUERAD
 sudo iptables -I FORWARD -m state -d 10.0.1.0/24 --state NEW,RELATED,ESTABLISHED -j ACCEPT
 sudo iptables -I FORWARD -m state -s 10.0.1.0/24 --state NEW,RELATED,ESTABLISHED -j ACCEPT
 
-#You must enable the packet forwarding in the system module unless packet routing doesn't work.
+#You must enable the packet forwarding in the system module unless packet routing does not work.
 sudo sysctl -w net.ipv4.ip_forward=1
 ```
 Setting up the SEV worker node
@@ -66,7 +67,7 @@ SEV worker node requires an AMD server that supports the SEV feature. SEV featur
 
 1- Install and prepare the SEV HOST for the UBUNTU 18 OS by following the https://github.com/AMDESE/AMDSEV
 
-2- On the host machine, install OpenSSH-SERVER, then set the 'root' password.
+2- On the host machine, install OpenSSH-SERVER, then set the 'root' password. SecDATAVIEW uses 'root' account to remotely launch the SEV VMs in the AMD server.
 ```
 sudo apt get install openssh-server
 sudo su
@@ -78,7 +79,7 @@ https://linuxconfig.org/allow-ssh-root-login-on-ubuntu-18-04-bionic-beaver-linux
 
 4- make sure you can get ssh access to the AMD server with 'root' account.
 ```
-ssh root@"Your AMD server ip" 
+ssh root@"Your AMD server IP" 
 ```
 5- Download the pre-created SEV disk image <ubuntu.18.0.4.qcow2> from the link below and save the disk image in your SecDATAVIEW Master node.
 
@@ -102,7 +103,7 @@ sudo ifconfig br0 hw ether 12:34:56:78:9a:bc up
 sudo  dhclient -v br0
 ```
 
-#Follow the article below for more information regarding network configuration for KVM and QEMU
+Follow the article below for more information regarding network configuration in KVM and QEMU that is used by SEV VM  
 https://gist.github.com/extremecoders-re/e8fd8a67a515fee0c873dcafc81d811c
 
 Setting up SecDATAVIEW master node
@@ -116,11 +117,11 @@ Please follow the instruction below to setup the master node.
 sudo apt install openjdk-8-jdk
 ```
 
-2- Install Eclipse ide for JAVA (Oxygen.3a Release (4.7.3a) from official Eclipse website.
+2- Install Eclipse ide for JAVA (Oxygen.3a Release (4.7.3a) from the official Eclipse website.
 
 3- Install git on your master node. 
 ```
-sudo apt-install git
+sudo apt install git
 ```
 
 4- Clone the SecDATAVIEW project from git on your master node. 
@@ -130,9 +131,10 @@ git clone https://github.com/Saeid2k/secureDW.git
 
 5- Create a new workspace on your Eclipse IDE
 
-6- Import the SecDATAVIEW project into your workspace.
+6- Import the SecDATAVIEW project into your Eclipse workspace.
 
-7- Update your workflow
+7- Update your workflow; consult Tutorials
+in https://github.com/shiyonglu/DATAVIEW to learn about creating a workflow. Also, this repository contains two pre-created workflow for the test purpose.
 
 8- Update the ```config.txt``` file in ```confidentialIinfo``` folder enlisting all the confidential tasks in the following format
 ```
@@ -169,7 +171,7 @@ git clone https://github.com/Saeid2k/secureDW.git
     ]
 }
 ```
-12- Create all the tasks in the following format.
+12- Create all the tasks in the following format. (or follow tutorial link for more information)
 
   12.1- Define the size of the InputPort, OutPort, and type of dataset in the constructor of the class.
   
@@ -202,15 +204,29 @@ Update the value of ```AMD_IMG_DST_FOLDER```  with the path for home folder of y
 Update the value for ```AMD_SCRIPT_SRC_FILE``` relative to your project path
 ```public static final String AMD_SCRIPT_SRC_FILE = "/home/ishtiaq/Desktop/ishtiaq_git/secureDW/machineScript/AMD/vm1-launch-dataview-sev.sh";```
 
-Update the value of ```AMD_SCRIPT_DST_FOLDER```  with the path for home folder of your account on the AMD host server  
+Update the value of ```AMD_SCRIPT_DST_FOLDER```  with the path for the home folder of your account on the AMD host server  
 
 ```public static final String AMD_SCRIPT_DST_FOLDER = "/home/mofrad-s/";
 ```
 
+Update the value of ```AMD_SERVER_IP```  with the IP address of your AMD host server  
 
+```
+public static final String AMD_SERVER_IP = "172.30.18.202";
+```
+keep the value of ```AMD_SERVER_USER_NAME```  as root. SecDATAVIEW requires root access to the machine to launch SEV VMs on the AMD server
+
+```
+public static final String AMD_SERVER_USER_NAME = "root";
+```
+update the value of ```AMD_SERVER_PASSWORD```  for 'root' account in the AMD server   
+
+```
+public static final String AMD_SERVER_PASSWORD = "12345678";
+```
 CryptoTools instructions
 ------------------------
-Put all the input files in ```source_folder_location``` and then run the ```CryptoTool``` by the following format
+Put all the workflow input files in ```source_folder_location``` and then run the ```CryptoTool``` by the following format
 ```
 java -jar CryptoTool.jar "enc" "associated_data" "secret_key" "source_folder_location" "destination_folder_location"
 ```
@@ -220,11 +236,12 @@ The parementer order are as follows:``` "mode" "secret_Key" "associated_data" "s
 Sample Workflows
 ----------------
 
-1- Running Diagnosis Recommendation Workflow: (Example of hybrid workflow; SGX and SEV workers)
+1- Running Diagnosis Recommendation Workflow: (Example of the hybrid workflow; SGX and SEV workers)
 -----------------------------------------------------------------------------------------------
-1- Import the SecDATAVIEW project into Eclipse IDE and execute the ```DriverDiagnosisNew.java``` file as a driver class for Diagnosis Recommendation Workflow. This driver class is invoked with a SGX and a SEV machines. Since Diagnosis Recommendation Workflow involves with six tasks, the first four tasks are assigned to SGX machines and the rest of the tasks are allocated to an SEV machines. The output file for this workflow will be assigned to the machine that is associated with the last tasks "Evaluation".
+Import the SecDATAVIEW project into Eclipse IDE and execute the ```DriverDiagnosisNew.java``` file as a driver class for Diagnosis Recommendation Workflow. This driver class is invoked with an SGX and a SEV machines. All necessary inputs and files have been provided in this repository. Since Diagnosis Recommendation Workflow involves six tasks, the first four tasks are assigned to SGX machines, and the rest of the tasks are allocated to a SEV machine. The output file for this workflow will be assigned to the machine that is associated with the last tasks "Evaluation."
 
 
 2- Running Word Count Workflow (Map/Reduce) Workflow: (Example of SGX only workflow)
 ------------------------------------------------------------------------------------
-1- Import the SecDATAVIEW project into Eclipse IDE and execute the ```DriverMapReduce.java``` file as a driver class for Word Count Workflow. All the tasks associated with this workflow is configured to assigned to only one SGX machine. 
+1- Import the SecDATAVIEW project into Eclipse IDE and execute the ```DriverMapReduce.java``` file as a driver class for Word Count Workflow. All the tasks associated with this workflow is configured to assign to only one SGX machine. 
+
