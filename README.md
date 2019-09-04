@@ -9,7 +9,7 @@ Prerequisites
 SecDATAVIEW has been tested on Ubuntu 16.04 LTS for SGX worker nodes and 18.04 LTS for SEV worker node. 
 
 Setting up the SGX worker node:
----------------------------
+-------------------------------
 On every SGX worker node, please install Ubuntu 16.04 LTS then follow the instruction below.
 
 1- Install the Intel SGX driver https://github.com/01org/linux-sgx-driver is required. 
@@ -37,7 +37,7 @@ sudo ip tuntap add dev sgxlkl_tap0 mode tap user `whoami`
 sudo ip link set dev sgxlkl_tap0 up
 sudo ip addr add dev sgxlkl_tap0 10.0.1.254/24
 ```
-To forward the network packets, the OS iptables should be updated with the following commands: 
+To forward the network packets, the OS iptables should be updated with the following commands
 ```
 #Lets backup the OS iptables first. Keep this file to restore the iptables rules at a later time
 
@@ -60,8 +60,8 @@ sudo iptables -I FORWARD -m state -s 10.0.1.0/24 --state NEW,RELATED,ESTABLISHED
 #You must enable the packet forwarding in the system module unless packet routing doesn't work.
 sudo sysctl -w net.ipv4.ip_forward=1
 ```
-Setting up the SEV worker node:
----------------------------
+Setting up the SEV worker node
+-----------------------------
 SEV worker node requires an AMD server that supports the SEV feature. SEV feature must be enabled in the BIOS of the server, and instructions provided below should be followed.
 
 1- Install and prepare the SEV HOST for the UBUNTU 18 OS by following the https://github.com/AMDESE/AMDSEV
@@ -85,7 +85,7 @@ ssh root@"Your AMD server ip"
  https://www.dropbox.com/sh/hywa7du0sr70nec/AABAyHqD_4tPYXVUNdw2bQAEa?dl=0
 
 
-Networking support for SEV worker nodes:
+Networking support for SEV worker nodes
 ----------------------------------------
 
 In order SecDATAVIEW SEV VM to send and receive packets via the network, a TAP interface is needed on the host AMD server for every single SEV VM. The TAP interface should be bridged to the ethernet interface with internet access so that every SEV VM receives its IP addresses from the LAN DHCP server. Create and configure each TAP interface as follows:
@@ -105,10 +105,10 @@ sudo  dhclient -v br0
 #Follow the article below for more information regarding network configuration for KVM and QEMU
 https://gist.github.com/extremecoders-re/e8fd8a67a515fee0c873dcafc81d811c
 
-Setting up SecDATAVIEW master node:
+Setting up SecDATAVIEW master node
 -----------------------------------
 
-We have tested SecDATAVIEW master on Ubuntu 16 LTS
+We have tested SecDATAVIEW master on Ubuntu 16.0.4 LTS
 Please follow the instruction below to setup the master node.
 
 1- Install OpenJDK 1.8
@@ -183,9 +183,34 @@ git clone https://github.com/Saeid2k/secureDW.git
 
 
 
-Setting up SecDATAVIEW master node:
+Setting up SecDATAVIEW master node
 -----------------------------------
-1- Put all the input files in ```source_folder_location``` and then run the ```CryptoTool``` by the following format
+1- Update the values of the variables below in the ```WorkflowExecutor_Alfa.java``` based on the following information
+
+Update the value of ```SGX_IMG_SRC_FILE```  with the path for sgx-lkl disk image  
+```
+public static final String SGX_IMG_SRC_FILE = "/home/ishtiaq/sgxlkl-disk.img.enc";
+```
+
+Update the value for ```SGX_SCRIPT_SRC_FILE``` relative to your project path
+```public static final String SGX_SCRIPT_SRC_FILE = "/home/ishtiaq/Desktop/ishtiaq_git/secureDW/machineScript/SGX/sgx-lkl-java-encrypted-dataview.sh";```
+
+Update the value of ```AMD_IMG_SRC_FILE```  with the path for AMD SEV disk image 
+```public static final String AMD_IMG_SRC_FILE = "/home/ishtiaq/ubuntu-18.04.qcow2";```
+
+Update the value of ```AMD_IMG_DST_FOLDER```  with the path for home folder of your account on the AMD host server  
+```public static final String AMD_IMG_DST_FOLDER = "/home/mofrad-s/";```
+
+Update the value for ```AMD_SCRIPT_SRC_FILE``` relative to your project path
+```public static final String AMD_SCRIPT_SRC_FILE = "/home/ishtiaq/Desktop/ishtiaq_git/secureDW/machineScript/AMD/vm1-launch-dataview-sev.sh";```
+
+Update the value of ```AMD_SCRIPT_DST_FOLDER```  with the path for home folder of your account on the AMD host server  
+
+```public static final String AMD_SCRIPT_DST_FOLDER = "/home/mofrad-s/";
+```
+
+
+2- Put all the input files in ```source_folder_location``` and then run the ```CryptoTool``` by the following format
 ```
 java -jar CryptoTool.jar "enc" "associated_data" "secret_key" "source_folder_location" "destination_folder_location"
 ```
@@ -196,10 +221,10 @@ Sample Workflows:
 -----------------
 
 1- Running Diagnosis Recommendation Workflow: (Example of hybrid workflow; SGX and SEV workers)
--------------------------------------------
+-----------------------------------------------------------------------------------------------
 1- Import the SecDATAVIEW project into Eclipse IDE and execute the ```DriverDiagnosisNew.java``` file as a driver class for Diagnosis Recommendation Workflow. This driver class is invoked with a SGX and a SEV machines. Since Diagnosis Recommendation Workflow involves with six tasks, the first four tasks are assigned to SGX machines and the rest of the tasks are allocated to an SEV machines. The output file for this workflow will be assigned to the machine that is associated with the last tasks "Evaluation".
 
 
 2- Running Word Count Workflow (Map/Reduce) Workflow: (Example of SGX only workflow)
----------------------------------------------------
+------------------------------------------------------------------------------------
 1- Import the SecDATAVIEW project into Eclipse IDE and execute the ```DriverMapReduce.java``` file as a driver class for Word Count Workflow. All the tasks associated with this workflow is configured to assigned to only one SGX machine. 
