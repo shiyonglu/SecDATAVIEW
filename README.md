@@ -69,7 +69,7 @@ SEV worker node requires an AMD server that supports the SEV feature. SEV featur
 
 2- On the host machine, install OpenSSH-SERVER, then set the 'root' password. SecDATAVIEW uses 'root' account to remotely launch the SEV VMs in the AMD server.
 ```
-sudo apt get install openssh-server
+sudo apt install openssh-server
 sudo su
 passwd "set the password for 'root'"
 ```
@@ -126,7 +126,7 @@ sudo apt install git
 
 4- Clone the SecDATAVIEW project from git on your master node. 
 ```
-git clone https://github.com/Saeid2k/secureDW.git
+git clone https://github.com/shiyonglu/SecDATAVIEW.git
 ```
 
 5- Create a new workspace on your Eclipse IDE
