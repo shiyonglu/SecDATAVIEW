@@ -154,7 +154,7 @@ in https://github.com/shiyonglu/DATAVIEW to learn about creating a workflow. Als
 
 10- Put the encrypted workflow input files in ```workflowDataDir```folder.
 
-11- Update the IP addresses for SEV and SGX in ```IPPool.txt```, that is located in ```workflowLibDir``` in the following format
+11- Update the IP addresses for SEV and SGX in ```IPPool.txt```, that is located in ```confidentialIinfo``` in the following format
 ```
 {
   "IPPool":
