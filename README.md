@@ -130,7 +130,7 @@ sudo apt install git
 
 4- Clone the SecDATAVIEW project from git on your master node. 
 ```bash
-git clone https://github.com/Saeid2k/secureDW.git
+git clone https://github.com/shiyonglu/SecDATAVIEW.git
 ```
 
 5- Create a new workspace on your Eclipse IDE
