@@ -54,17 +54,21 @@ public class WorkflowExecutor_Alpha extends WorkflowExecutor{
 	public static final String SGX_SCRIPT_SRC_FILE = "/home/ishtiaq/Desktop/ishtiaq_git/secureDW/machineScript/SGX/sgx-lkl-java-encrypted-dataview.sh";
 	public static final String SGX_SCRIPT_DST_FOLDER = "/home/ubuntu/";
 	
+	public static final String SGX_SERVER_USER_NAME = "ubuntu";
+	public static final String SGX_SERVER_PASSWORD = "acsac19";
+	
+	
 	public static final String AMD_IMG_SRC_FILE = "/home/ishtiaq/ubuntu-18.04.qcow2";
 	public static final String AMD_IMG_DST_FOLDER = "/home/mofrad-s/";
 	public static final String AMD_SCRIPT_SRC_FILE = "/home/ishtiaq/Desktop/ishtiaq_git/secureDW/machineScript/AMD/vm1-launch-dataview-sev.sh";
 	public static final String AMD_SCRIPT_DST_FOLDER = "/home/mofrad-s/";
 	
-	public static final String SGX_SEV_AWS_USER_NAME = "ubuntu";
-	public static final String SGX_SEV_AWS_USER_PASSWORD = "dataview";		
+	public static final String SEV_AWS_USER_NAME = "ubuntu";
+	public static final String SEV_AWS_USER_PASSWORD = "dataview";		
 	
 	public static final String AMD_SERVER_IP = "172.30.18.202";
 	public static final String AMD_SERVER_USER_NAME = "root";
-	public static final String AMD_SERVER_PASSWORD = "Compass$2019";
+	public static final String AMD_SERVER_PASSWORD = "acsac19";
 	
 	private int totalSGXMachines = 0;
 	private int totalAMDMachines = 0;
@@ -330,7 +334,7 @@ public class WorkflowExecutor_Alpha extends WorkflowExecutor{
 				if (localSchedule.getVmType().equals(SGX)) {
 					sgxProvisioner.copyFileVMhost(SGX_IMG_SRC_FILE, SGX_IMG_DST_FOLDER, localSchedule.getIP());
 					sgxProvisioner.copyFileVMhost(SGX_SCRIPT_SRC_FILE, SGX_SCRIPT_DST_FOLDER, localSchedule.getIP());
-					sgxProvisioner.executeCommands(localSchedule.getIP(), SGX_SEV_AWS_USER_NAME,  SGX_SEV_AWS_USER_PASSWORD, sgxProvisioner.getBashCommands());
+					sgxProvisioner.executeCommands(localSchedule.getIP(), SGX_SERVER_USER_NAME,  SGX_SERVER_PASSWORD, sgxProvisioner.getBashCommands());
 					try {
 						System.out.println("System is halt after running the execute commannds of SGX_SCRIPT for 90 seconds");
 						Thread.sleep(90*1000);
@@ -359,9 +363,9 @@ public class WorkflowExecutor_Alpha extends WorkflowExecutor{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					amdProvisioner.executeCommands(localSchedule.getIP(), SGX_SEV_AWS_USER_NAME,  SGX_SEV_AWS_USER_PASSWORD, amdProvisioner.getBashCommands());
+					amdProvisioner.executeCommands(localSchedule.getIP(), SEV_AWS_USER_NAME,  SEV_AWS_USER_PASSWORD, amdProvisioner.getBashCommands());
 				} else if (localSchedule.getVmType().equals(AWS)) {
-					awsProvisioner.executeCommands(localSchedule.getIP(), SGX_SEV_AWS_USER_NAME,  SGX_SEV_AWS_USER_PASSWORD, awsProvisioner.getBashCommands());
+					awsProvisioner.executeCommands(localSchedule.getIP(), SEV_AWS_USER_NAME,  SEV_AWS_USER_PASSWORD, awsProvisioner.getBashCommands());
 				}
 			}
 		});

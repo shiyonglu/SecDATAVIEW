@@ -525,7 +525,7 @@ public class TaskExecutor {
 	}
 
 	
-	void copyFileVM1(String SourceDIR, String DestinationDIR, String strHostName) {
+	/*void copyFileVM1(String SourceDIR, String DestinationDIR, String strHostName) {
 
 		String SFTPHOST = strHostName;
 		int SFTPPORT = 8000;
@@ -557,9 +557,9 @@ public class TaskExecutor {
 		} catch (Exception ex) {
 			Dataview.debugger.logException(ex);
 		}
-	}
+	}*/
 	
-	void copyFileSGX(String SourceDIR, String DestinationDIR, String newFileName, String strHostName) {
+	/*void copyFileSGX(String SourceDIR, String DestinationDIR, String newFileName, String strHostName) {
 		String SFTPHOST = strHostName;
 		int SFTPPORT = 8000;
 		String SFTPUSER = "ubuntu";
@@ -602,9 +602,9 @@ public class TaskExecutor {
 				
 			}
 		}
-	}
+	}*/
 
-	void copyFileVM(String SourceDIR, String DestinationDIR, String newFileName,
+	/*void copyFileVM(String SourceDIR, String DestinationDIR, String newFileName,
 			String strHostName, String pemFileLocation) {
 		String SFTPHOST = strHostName;
 		int SFTPPORT = 22;
@@ -636,7 +636,7 @@ public class TaskExecutor {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-	}
+	}*/
 	
 	
 	// fileTransfer()
@@ -646,9 +646,9 @@ public class TaskExecutor {
 		System.out.println("Trying to send file : " + SourceDIR + " to " + strHostName );
 		while(isFoundException && countIteration-- > 0) {
 			String SFTPHOST = strHostName;
-		    int SFTPPORT = 8000;
-		    String SFTPUSER = "ubuntu";
-		    String SFTPPASS = "dataview";
+		    int SFTPPORT = VMProvisioner.SSHD_SFTP_PORT;//8000;
+		    String SFTPUSER = VMProvisioner.SSHD_USERNAME;   //"ubuntu";
+		    String SFTPPASS = VMProvisioner.SSHD_PASSWORD;  //"dataview";
 		    String SFTPWORKINGDIR = DestinationDIR;
 
 		    Session session = null;

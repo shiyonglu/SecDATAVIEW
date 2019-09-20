@@ -110,8 +110,6 @@ public class VMProvisionerSGX extends VMProvisioner{
 		System.out.println("Trying to send file : " + SourceDIR + " to " + strHostName );
 		while(isFoundException && countIteration-- > 0) {
 			String SFTPHOST = strHostName;
-			int SFTPPORT = 8000;
-			String SFTPUSER = "ubuntu";
 			String SFTPWORKINGDIR = DestinationDIR;
 			String FILETOTRANSFER = SourceDIR;
 			Session session = null;
@@ -119,13 +117,12 @@ public class VMProvisionerSGX extends VMProvisioner{
 			ChannelSftp channelSftp = null;
 			try {
 				JSch jsch = new JSch();
-				//		jsch.addIdentity(pemFileLocation);
-				session = jsch.getSession(SFTPUSER, SFTPHOST, SFTPPORT);
+				session = jsch.getSession(SSHD_USERNAME, SFTPHOST, SSHD_SFTP_PORT);
 				java.util.Properties config = new java.util.Properties();
 				config.put("StrictHostKeyChecking", "no");
-				session.setPassword("dataview");
+				session.setPassword(SSHD_PASSWORD);
 				session.setConfig(config);
-				session.setPort(8000);
+				session.setPort(SSHD_SFTP_PORT);
 				session.connect();
 				channel = session.openChannel("sftp");
 				channel.connect();
@@ -161,7 +158,7 @@ public class VMProvisionerSGX extends VMProvisioner{
 		while(isFoundException && countIteration-- > 0) {
 			String SFTPHOST = strHostName;
 			int SFTPPORT = 22;
-			String SFTPUSER = "ubuntu";
+			String SFTPUSER = WorkflowExecutor_Alpha.SGX_SERVER_USER_NAME;//"ubuntu";
 			String SFTPWORKINGDIR = DestinationDIR;
 			String FILETOTRANSFER = SourceDIR;
 			Session session = null;
@@ -173,7 +170,8 @@ public class VMProvisionerSGX extends VMProvisioner{
 				session = jsch.getSession(SFTPUSER, SFTPHOST, SFTPPORT);
 				java.util.Properties config = new java.util.Properties();
 				config.put("StrictHostKeyChecking", "no");
-				session.setPassword("dataview");
+				session.setPassword(WorkflowExecutor_Alpha.SGX_SERVER_PASSWORD);
+				//session.setPassword("dataview");
 				session.setConfig(config);
 				session.setPort(SFTPPORT);
 				session.connect();
