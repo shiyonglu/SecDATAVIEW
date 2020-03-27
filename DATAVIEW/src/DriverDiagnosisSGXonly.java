@@ -11,7 +11,7 @@ import dataview.workflowexecutor.WorkflowExecutorAlphaScheild;
 import dataview.workflowexecutor.WorkflowExecutor_Alpha;
 /**
  * Testing the workflow scheduler
- * @author ishtiaqahmed
+ * @author Ishtiaq Ahmed & Saeid Mofrad
  *
  */
 

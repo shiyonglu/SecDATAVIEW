@@ -11,7 +11,7 @@ import dataview.workflowexecutor.WorkflowExecutorAlphaScheild;
 import dataview.workflowexecutor.WorkflowExecutor_Alpha;
 /**
  * Testing the workflow scheduler
- * @author ishtiaqahmed
+ * @author Ishtiaq Ahmed & Saeid Mofrad
  *
  */
 
@@ -56,7 +56,7 @@ public class DriverDiagnosisNew {
 		
 		
 		LocalSchedule localSchedule2 = new LocalSchedule();
-		localSchedule2.setVmType("AMD");
+		localSchedule2.setVmType("SGX");
 		
 		localSchedule2.addTaskSchedule(taskSchedule5);
 		localSchedule2.addTaskSchedule(taskSchedule6);

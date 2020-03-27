@@ -1,17 +1,7 @@
 package dataview.models;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.util.HashMap;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 import dataview.workflowexecutor.TaskExecutor;
 
@@ -40,6 +30,7 @@ public class OutputPort extends Port{
 				String cypherTextName = location;
 				if (dwcrypto.encryptFile(cypherTextName, TaskExecutor.associatedData, plainTextName, TaskExecutor.secretKey) == 0) {
 					Dataview.debugger.logSuccessfulMessage("Successful encryption");
+					
 				} else {
 					Dataview.debugger.logErrorMessage("encryption is broken");
 				}

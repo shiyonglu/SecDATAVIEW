@@ -227,7 +227,7 @@ public class SshServerMain extends SshServerCliSupport {
         System.out.println("Starting CodeProvisioner by java reflection");
         sshd.close();
         URLClassLoader child = new URLClassLoader (new URL[] {new URL("file:///home/ubuntu/CodeProvisioner.jar")}, SshServerMain.class.getClassLoader());
-		Class classToLoad = Class.forName("dataview.workflowexecutor.CodeProvision", true, child);
+		Class classToLoad = Class.forName("dataview.workflowexecutor.CodeProvisioner", true, child);
 		Method method = classToLoad.getDeclaredMethod("run1");
 		//String[] point= new String[0];
 		//Method method = classToLoad.getDeclaredMethod("main",String[].class);

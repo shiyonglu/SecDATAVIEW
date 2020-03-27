@@ -18,9 +18,9 @@ import dataview.models.Dataview;
 import dataview.models.JSONArray;
 import dataview.models.JSONObject;
 import dataview.models.JSONParser;
-import dataview.workflowexecutor.VMProvisioner;
+import dataview.workflowexecutor.CloudResourceManagement;
 
-public class VMProvisionerAMD extends VMProvisioner{
+public class VMProvisionerAMD extends CloudResourceManagement{
 
 	@Override
 	List<String> getAvailableIPs(int totalMachine) {
@@ -254,5 +254,43 @@ public class VMProvisionerAMD extends VMProvisioner{
 		// TODO Auto-generated method stub
 		copyFileVM(SourceDIR, DestinationDIR, strHostName);
 		
+	}
+	public int initVM(String ip,String machineType){
+		if (machineType.equals("AMD")) {
+			//WCPAC.step 2: send(diskImage)
+
+								this.copyFileVMhost(WorkflowExecutor_Alpha.AMD_IMG_SRC_FILE, WorkflowExecutor_Alpha.AMD_IMG_DST_FOLDER, WorkflowExecutor_Alpha.AMD_SERVER_IP);
+			//WCPAC.step 3: send(machineScript(VPNPubKey_M)); AMD machineScript  does not implement VPN at this moment since it follows a different attestation mechanism that we did not implement for TIFS journal
+
+								this.copyFileVMhost(WorkflowExecutor_Alpha.AMD_SCRIPT_SRC_FILE, WorkflowExecutor_Alpha.AMD_SCRIPT_DST_FOLDER, WorkflowExecutor_Alpha.AMD_SERVER_IP);
+
+								Thread executeCommandHostThread = new Thread(new Runnable() {
+									@Override
+									public void run() {
+			//WCPAC.step 4: message(initVM) this message launch SEV VM
+
+										VMProvisionerAMD.executeCommandsHost(WorkflowExecutor_Alpha.AMD_SERVER_IP, WorkflowExecutor_Alpha.AMD_SERVER_USER_NAME,
+												WorkflowExecutor_Alpha.AMD_SERVER_PASSWORD);
+									}
+								});
+								executeCommandHostThread.start();
+
+								try {
+									System.out.println(
+											"System is halt after running the execute commannds of AMD_SCRIPT for 20 seconds");
+									Thread.sleep(20 * 1000);
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+			//WCPAC.step 4: message(initVM), this message launches SSHD.jar in the running SEV VM
+
+								this.executeCommands(ip, WorkflowExecutor_Alpha.SEV_AWS_USER_NAME, WorkflowExecutor_Alpha.SEV_AWS_USER_PASSWORD,
+										this.getBashCommands());
+		
+	}
+		else {return 1;}
+		
+		return 0;
 	}
 }

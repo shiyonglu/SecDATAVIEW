@@ -9,9 +9,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.security.KeyStore;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -39,7 +41,7 @@ import dataview.models.Task;
 import dataview.workflowexecutor.TaskExecutor;
 
 
-/**	A genetal introduction to TaskExecutor.
+/**	A general introduction to TaskExecutor.
  * 	The task executor will bind the data products with input ports and output ports
  *  It will call a specific task to read data from the input port, do data processing and write data to corresponding outputs.
  *  
@@ -52,19 +54,17 @@ import dataview.workflowexecutor.TaskExecutor;
  */
 
 
-/* The first method is "run" to start with this class understanding. 
+/* The first method is "run" to start with this class . 
  * Step 1 : Set up the SSH server for file transfer
  * Step 2 : Loading the confidentiality information according to local schedule assignment
  * Step 3 : Set up the SSL socket connection to the Workflow Executor, then receives the workflow related signals.
  * 
- * > is step 3 multithreadig?
+ *
  * 
- * Step 4: (also known as WCPAC 19 (Execute Job),  Run the tasks in this local schedule in parallel (multithreading)
+ * Step 4: (also known as WCPAC 30 (Execute Job),  Run the tasks in this local schedule in parallel (multi-threading)
  *          Implementation details: 1) check all input data are ready for a task, 2) run the task, and 3)
  *          send output data and signals to all children in parallel
- * 
- * Issue: Step3 and step4 are currently implemented by one method: Initialize? Can we split it into two methods?      
- *: yes, we can separate it: split Initialize() into three methoeds, corresponding to steps 3, 4 and 5.
+ *  
  *       
  * step 5: close all resources
  */
@@ -84,7 +84,7 @@ public class TaskExecutor {
 	private HashMap<String, String> taskVMmap = new HashMap<String, String>();
 //	private HashSet<String> AWS_IPs = new HashSet<>();
 	private final int PORT_NO = 7700;
-	
+	private List<String> firstTasksAssociatedInputAndLastTaskAssociatedOutputFiles = new ArrayList<>();
 	
 	public static String secretKey = "abc";
 	public static String associatedData = "abc";
@@ -97,21 +97,31 @@ public class TaskExecutor {
 	private long finishTime;
 
 	public static void main(String[] args) throws Exception {
-
-		Dataview.debugger.logSuccessfulMessage("Starting TaskExecutor");
-		TaskExecutor taskExecutor = new TaskExecutor();
-		Dataview.debugger.logSuccessfulMessage("Loading Confidential tasks list from config.txt");
-		taskExecutor.loadConfidentialTaskNames();
-		taskExecutor.connectWithWorkflowExecutor();
-	}
-
-	public void run() throws Exception {
-		Dataview.debugger.logSuccessfulMessage("Starting TaskExecutor");
+		Dataview.debugger.logSuccessfulMessage("Starting TaskExecutor Ver 1.1");
 		TaskExecutor taskExecutor = new TaskExecutor();
 		/*
 		 * Initiate server connection
 		 */
-		runSShServer();
+		taskExecutor.runSShServer();
+		/*
+		 * load confidential configuration. 
+		 */
+		taskExecutor.loadConfidentialTaskNames();
+		
+		/*
+		 * Regular communication established with Workflow executor 
+		 */
+		taskExecutor.connectWithWorkflowExecutor();
+		
+	}
+	// This function is called by the codeprovisioner.jar
+	public void run() throws Exception {
+		Dataview.debugger.logSuccessfulMessage("Starting TaskExecutor Ver 1.1");
+		TaskExecutor taskExecutor = new TaskExecutor();
+		/*
+		 * Initiate server connection
+		 */
+		taskExecutor.runSShServer();
 		/*
 		 * load confidential configuration. 
 		 */
@@ -162,7 +172,7 @@ public class TaskExecutor {
 				confidentialTasks.add(taskName);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Dataview.debugger.logException(e);
 		}
 
 		
@@ -217,6 +227,10 @@ public class TaskExecutor {
 					} else {
 						String srcFilename = indc.get("srcFilename").toString().replace("\"", "");
 						myTask.ins[j].setLocation("/home/ubuntu/" + srcFilename);
+						if (confidentialTasks.contains(myTaskName)) {
+							Dataview.debugger.logSuccessfulMessage(srcFilename);
+							firstTasksAssociatedInputAndLastTaskAssociatedOutputFiles.add("/home/ubuntu/" + srcFilename.split("\\.")[0] + ".txt");
+						}
 					}
 				}
 
@@ -252,11 +266,16 @@ public class TaskExecutor {
 					} else {
 						String srcFilename = outdc.get("destFilename").toString().replace("\"", "");
 						myTask.outs[j].setLocation("/home/ubuntu/" + srcFilename);
+						if (confidentialTasks.contains(myTaskName)) {
+							Dataview.debugger.logSuccessfulMessage(srcFilename);
+							firstTasksAssociatedInputAndLastTaskAssociatedOutputFiles.add("/home/ubuntu/" + srcFilename.split("\\.")[0] + ".txt");
+						}
 					}
 				}
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				
+				Dataview.debugger.logException(e);
 			}
 
 		}
@@ -270,8 +289,11 @@ public class TaskExecutor {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
+//WCPAC.step 30: message(startJob), this step the workflow job schedules and configuration are received from Workflow Executor
 					onTaskRunStart(task);
+//WCPAC.step 31: Execute Job, this step the workflow job is executed.
 					executeTask(task);
+//WCPAC.step 34: message(terminateTaskExecutor), this step the signal request Task Executor to start shutdown routine and termiate itself 					
 					onTaskRunFinish(task);
 
 				}
@@ -298,15 +320,15 @@ public class TaskExecutor {
 			sc.init(kmf.getKeyManagers(), trustManagers, null);
 			SSLServerSocketFactory ssf = sc.getServerSocketFactory();
 			serverSocket= (SSLServerSocket) ssf.createServerSocket(PORT_NO);
-			System.out.println("SSL ServerSocket started");
+			Dataview.debugger.logSuccessfulMessage("SSL ServerSocket started");
 			server = (SSLSocket) serverSocket.accept();
-			System.out.println("SSL ServerSocket Accepted");
+			Dataview.debugger.logSuccessfulMessage("SSL ServerSocket Accepted");
 
 			input = new BufferedReader(new InputStreamReader(server.getInputStream()));
 			output = new PrintStream(server.getOutputStream());
 
-		} catch(Exception exception) {
-			Dataview.debugger.logException(exception);
+		} catch(Exception e) {
+			Dataview.debugger.logException(e);
 		}
 
 
@@ -334,7 +356,13 @@ public class TaskExecutor {
 					lock.unlock();
 
 				} else if (parts[0].equals("terminate")) {
-					Dataview.debugger.logSuccessfulMessage("Terminating Task executor");
+					// On terminate signal clean up the storage of plain text files
+//WCPAC.step 35: clean-up, this step deletes all intermediate and residual files in the worker storage after the workflow job is done  					
+								deleteAllConfidentialTextFiles();
+							
+					
+					//
+					Dataview.debugger.logSuccessfulMessage("Terminating Task Executor");
 					output.println("terminateThread");
 					server.close();
 					serverSocket.close();
@@ -383,7 +411,7 @@ public class TaskExecutor {
 				mapCondition.get(tasks.get(task)).await();
 				Dataview.debugger.logSuccessfulMessage("Woke up : " + tasks.get(task));
 			} catch (Exception e) {
-				e.printStackTrace();
+				Dataview.debugger.logException(e);
 			}
 			lock.unlock();
 		}
@@ -445,8 +473,8 @@ public class TaskExecutor {
 					}
 					Dataview.debugger.logSuccessfulMessage("new file  " + location + ":" + input);
 				}
-			} catch (Exception ex) {
-				Dataview.debugger.logException(ex);
+			} catch (Exception e) {
+				Dataview.debugger.logException(e);
 			}
 			isExecuted.put(tasks.get(task), true);
 			if (child != null && mapCondition.get(tasks.get(child)) != null) {
@@ -464,6 +492,7 @@ public class TaskExecutor {
 				if (confidentialTasks.contains(parts[0].split("@")[0])
 						|| confidentialTasks.contains(task.taskName.split("@")[0])) {
 					transferredFileName = parts[0] + "_in" + parts[1] + ".enc";
+					
 				} else {
 					transferredFileName = parts[0] + "_in" + parts[1] + ".txt";
 				}
@@ -508,7 +537,7 @@ public class TaskExecutor {
 			}
 			
 			Dataview.debugger
-			.logSuccessfulMessage("Sending sginal to remote machines for successfully finished execution of " + tasks.get(task));
+			.logSuccessfulMessage("Sending sginal to the Master node for successfully finished execution of " + tasks.get(task));
 			
 			
 			String signal = "SuccessXX" + tasks.get(task);
@@ -525,6 +554,70 @@ public class TaskExecutor {
 	}
 
 	
+	private void deleteAllConfidentialTextFiles() {
+		Dataview.debugger.logSuccessfulMessage("Delete all residual confidential plaintext files..");
+		File folder = new File("/home/ubuntu/");
+		
+		for (String name : confidentialTasks) {
+			Dataview.debugger.logSuccessfulMessage("Connfidential Task Name : " + name);
+		}
+		File[] listOfFiles = folder.listFiles();
+		for (int i = 0; i < listOfFiles.length; i++) {
+			Dataview.debugger.logSuccessfulMessage("File Name : " + listOfFiles[i].getName().trim());
+			String currentFileName = listOfFiles[i].getName().trim();
+			
+			String currentFileNameWithoutId = currentFileName.split("@")[0];
+			Dataview.debugger.logSuccessfulMessage("File Name without id : " + currentFileNameWithoutId);
+		
+			
+			if (listOfFiles[i].isFile() & confidentialTasks.contains(currentFileNameWithoutId) && currentFileName.contains(".txt")) {
+				deleteFile(listOfFiles[i]);
+			}
+			if(listOfFiles[i].isFile() && (currentFileName.contains("TaskExecutor.jar") || currentFileName.contains("CodeProvisioner.jar") || currentFileName.contains("config.txt")
+					|| currentFileName.contains("clientkeystore") || currentFileName.contains("codeprovisioner.jks") 
+					|| currentFileName.contains("TaskExecutor.enc") || currentFileName.contains("key.pem")     ))
+			{
+				deleteFile(listOfFiles[i]);
+
+			}
+
+		}
+		
+		for (String fileName : firstTasksAssociatedInputAndLastTaskAssociatedOutputFiles) {
+			File file = new File(fileName);
+			deleteFile(file);
+		}
+
+	}
+	
+	private void deleteFile(File file) {
+		try {
+	        if(file.delete()) { 
+	        	Dataview.debugger.logSuccessfulMessage("File: " + file.getName() + " deleted successfully");		 
+	        } 
+	        else { 
+	        	Dataview.debugger.logErrorMessage("Failed to delete the file : " + file.getName()); 
+	        }
+		} catch(Exception e) {
+			Dataview.debugger.logException(e);
+		}
+	}
+	
+	ArrayList<String> retrieveFileNames(String directory) {
+		ArrayList<String> fileNames = new ArrayList<String>();
+		File folder = new File(directory);
+		File[] listOfFiles = folder.listFiles();
+
+		for (int i = 0; i < listOfFiles.length; i++) {
+			if (listOfFiles[i].isFile()) {
+				Dataview.debugger.logSuccessfulMessage("File " + listOfFiles[i].getName());
+				fileNames.add(directory + "/" + listOfFiles[i].getName().trim());
+			}
+
+		}
+		return fileNames;
+	}
+
 	/*void copyFileVM1(String SourceDIR, String DestinationDIR, String strHostName) {
 
 		String SFTPHOST = strHostName;
@@ -643,18 +736,18 @@ public class TaskExecutor {
 	public static void send (String SourceDIR, String DestinationDIR, String newFileName, String strHostName) {
 		boolean isFoundException = true;
 		int countIteration = 15;
-		System.out.println("Trying to send file : " + SourceDIR + " to " + strHostName );
+		Dataview.debugger.logSuccessfulMessage("Trying to send file : " + SourceDIR + " to " + strHostName );
 		while(isFoundException && countIteration-- > 0) {
 			String SFTPHOST = strHostName;
-		    int SFTPPORT = VMProvisioner.SSHD_SFTP_PORT;//8000;
-		    String SFTPUSER = VMProvisioner.SSHD_USERNAME;   //"ubuntu";
-		    String SFTPPASS = VMProvisioner.SSHD_PASSWORD;  //"dataview";
+		    int SFTPPORT = CloudResourceManagement.SSHD_SFTP_PORT;//8000;
+		    String SFTPUSER = CloudResourceManagement.SSHD_USERNAME;   //"ubuntu";
+		    String SFTPPASS = CloudResourceManagement.SSHD_PASSWORD;  //"dataview";
 		    String SFTPWORKINGDIR = DestinationDIR;
 
 		    Session session = null;
 		    Channel channel = null;
 		    ChannelSftp channelSftp = null;
-		    System.out.println("preparing the host information for sftp.");
+		    Dataview.debugger.logSuccessfulMessage("preparing the host information for sftp.");
 
 		    try {
 		        JSch jsch = new JSch();
@@ -664,17 +757,17 @@ public class TaskExecutor {
 		        config.put("StrictHostKeyChecking", "no");
 		        session.setConfig(config);
 		        session.connect();
-		        System.out.println("Host connected.");
+		        Dataview.debugger.logSuccessfulMessage("Host connected.");
 		        channel = session.openChannel("sftp");
 		        channel.connect();
-		        System.out.println("sftp channel opened and connected.");
+		        Dataview.debugger.logSuccessfulMessage("sftp channel opened and connected.");
 		        channelSftp = (ChannelSftp) channel;
 		        channelSftp.cd(SFTPWORKINGDIR);
 		        File f = new File(SourceDIR);
 		        channelSftp.put(new FileInputStream(f), newFileName);
 		        isFoundException = false;
 		    } catch (Exception e) {
-		        System.out.println("Exception found while tranfer the response. : " + e);
+		    	Dataview.debugger.logErrorMessage("Exception found while tranfer the response.");
 		        Dataview.debugger.logException(e);
 				Dataview.debugger.logErrorMessage("File sending exception is caught " + e + " host: " + strHostName);
 				Dataview.debugger.logErrorMessage("Trying to resend " + SourceDIR);
@@ -682,16 +775,16 @@ public class TaskExecutor {
 				try {
 					Dataview.debugger.logSuccessfulMessage("Waiting for 15 seconds to resend the file");
 					Thread.sleep(15000);
-				} catch (InterruptedException ex) {
-					e.printStackTrace();
+				} catch (InterruptedException e1) {
+					Dataview.debugger.logException(e1);
 				}
 		    } finally {
 		        channelSftp.exit();
-		        System.out.println("sftp Channel exited.");
+		        Dataview.debugger.logSuccessfulMessage("sftp Channel exited.");
 		        channel.disconnect();
-		        System.out.println("Channel disconnected.");
+		        Dataview.debugger.logSuccessfulMessage("Channel disconnected.");
 		        session.disconnect();
-		        System.out.println("Host Session disconnected.");
+		        Dataview.debugger.logSuccessfulMessage("Host Session disconnected.");
 		    }
 		}
 		

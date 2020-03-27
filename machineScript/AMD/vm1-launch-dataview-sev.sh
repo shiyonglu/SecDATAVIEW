@@ -3,7 +3,7 @@
 #
 # user changeable parameters
 #
-HDA_FILE="/home/mofrad-s/ubuntu-18.04.qcow2"
+HDA_FILE="/home/mofrad-s/sev-image.qcow2"
 GUEST_SIZE_IN_MB="4096"
 SEV_GUEST="1"
 SMP_NCPUS="4"

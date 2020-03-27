@@ -53,9 +53,9 @@ import dataview.models.Dataview;
 import dataview.models.JSONArray;
 import dataview.models.JSONObject;
 import dataview.models.JSONParser;
-import dataview.workflowexecutor.VMProvisioner;
+import dataview.workflowexecutor.CloudResourceManagement;
 
-public class VMProvisionerAWS extends VMProvisioner{
+public class VMProvisionerAWS extends CloudResourceManagement{
 
 	String accessKey;
 	String secretKey; 
@@ -613,5 +613,16 @@ public class VMProvisionerAWS extends VMProvisioner{
 		}
 		
 	}
+	public int initVM(String ip,String machineType){
+		if (machineType.equals("AWS")) {
+			this.executeCommands(ip, WorkflowExecutor_Alpha.SEV_AWS_USER_NAME, WorkflowExecutor_Alpha.SEV_AWS_USER_PASSWORD,
+					this.getBashCommands());
+		}
+		else 
+			{return 1;}
+		
+		return 0;
+	}
+	
 
 }

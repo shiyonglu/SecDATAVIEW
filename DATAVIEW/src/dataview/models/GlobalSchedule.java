@@ -69,7 +69,7 @@ public class GlobalSchedule {
 	}
 	
 	/**
-	 * This method will return the ip address associated with task by their taskInstanceIDß
+	 * This method will return the ip address associated with task by their taskInstanceID
 	 * @return
 	 */
 	public HashMap<String, String> mapTaskToVM() {
