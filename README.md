@@ -2,7 +2,8 @@ SecDATAVIEW: A Secure Big Data Workflow Management System for Heterogeneous Comp
 ==================================================================================================
 SecDATAVIEW is a secure big data workflow management system compatible with the heterogeneous computing environment. It leverages hardware-assisted TEEs such as Intel SGX and AMD SEV to protect the execution of workflows in the untrusted cloud. 
 The SecDATAVIEW paper is appeared in proceedings of The 35th Annual Computer Security Applications Conference 
-(ACSAC'19), San Juan, Puerto Rico, December, 2019. 
+(ACSAC'19), San Juan, Puerto Rico, December, 2019. The first release of SecDATAVIEW implemented the artifacts of the ACSAC'19 paper. Please Download and use the first release that corresponding to ACSAC'19 paper. We have enhanced the SecDATAVIEW with additional security measurements to address the attacks that maninly fake the presence of TEE with leveraging real-time Intel-based SGX attestation and attacks that mainly happen after the workflow execution is finished (e.g., when data owner shutdown VPCs and left the cloud environments). All together is availabe as current release.
+ 
 
 Prerequisites
 -------------
@@ -133,12 +134,26 @@ sudo apt install git
 git clone https://github.com/shiyonglu/SecDATAVIEW.git
 ```
 
-5- Create a new workspace on your Eclipse IDE
+5- Download and copy the binaries of modified SGX-LKL in your home folder. The current release uses the modified version of SGX-LKL for Intel SGX attestation purposes.  You may find the binaries and source codes in https://www.dropbox.com/sh/hywa7du0sr70nec/AABAyHqD_4tPYXVUNdw2bQAEa?dl=0
 
-6- Import the SecDATAVIEW project into your Eclipse workspace. Subfolder ```DATAVIEW``` should be imported into the Eclipse workspace.
-7- Update your workflow; consult Tutorials in https://github.com/shiyonglu/DATAVIEW to learn about creating a workflow. Also, this repository contains two pre-created workflow for the test purpose.
+6- Install Wire Guard VPN on the master node
+``` bash
+sudo add-apt-repository ppa:wireguard/wireguard
+sudo apt update
+sudo apt install wireguard
+#From the /machineScript/SGX/WireGuard_VPN_Setup/ folder run wg-sgxlkl-client.sh to setup master node wire guard end point.
+#wgclient.priv and wgclient.pub key files in /WireGuard_VPN_Setup/ folder should be available to wg-sgxlkl-client.sh.
+#Make sure Wire gurad is functioning correctlly by calling into below command.
+sudo wg
+```
 
-8- Update the ```config.txt``` file in ```confidentialIinfo``` folder by enlisting all the confidential tasks in the following format
+
+7- Create a new workspace on your Eclipse IDE
+
+8- Import the SecDATAVIEW project into your Eclipse workspace. Subfolder ```DATAVIEW``` should be imported into the Eclipse workspace.
+9- Update your workflow; consult Tutorials in https://github.com/shiyonglu/DATAVIEW to learn about creating a workflow. Also, this repository contains two pre-created workflow for the test purpose.
+
+10- Update the ```config.txt``` file in ```confidentialIinfo``` folder by enlisting all the confidential tasks in the following format
 ```json
 {
   "confidentialTasks":
@@ -152,15 +167,15 @@ git clone https://github.com/shiyonglu/SecDATAVIEW.git
     ]
 }
 ```
-9- Encrypt the workflow input dataset (for confidential tasks) with the provided ```CryptoTools``` application.
+11- Encrypt the workflow input dataset (for confidential tasks) with the provided ```CryptoTools``` application.
  Update ```secretkey``` and ```associatedData ``` values in the ```TaskExecutor.java``` with your cryptography setting. 
  ```java
  public static String secretKey = "abc";
  public static String associatedData = "abc";
  ```
-10- Put the encrypted workflow input files in ```workflowDataDir```folder.
+12- Put the encrypted workflow input files in ```workflowDataDir```folder.
 
-11- Update the IP addresses for SEV and SGX in ```IPPool.txt```, that is located in ```confidentialIinfo``` in the following format. No duplicated IP is allowed in this list.
+13- Update the IP addresses for SEV and SGX in ```IPPool.txt```, that is located in ```confidentialIinfo``` in the following format. No duplicated IP is allowed in this list.
 ```json
 {
   "IPPool":
@@ -177,19 +192,19 @@ git clone https://github.com/shiyonglu/SecDATAVIEW.git
     ]
 }
 ```
-12- Create all the tasks in the following format. (or follow tutorial link for more information)
+14- Create all the tasks in the following format. (or follow tutorial link for more information)
 
-12.1- Define the size of the InputPort, OutPort, and type of dataset in the constructor of the class.
+14.1- Define the size of the InputPort, OutPort, and type of dataset in the constructor of the class.
   
-12.2- Overwrite your task in run() method. 
+14.2- Overwrite your task in run() method. 
   
-12.3- Put all the workflow tasks in the default package.
+14.3- Put all the workflow tasks in the default package.
 
-13. Export the runnable jar ```TaskExecutor.jar``` to ```confidentialInfo``` folder by selecting ```TaskExecutor.java``` file. This executable jar file should be created with Eclipse IDE.
+14. Export the runnable jar ```TaskExecutor.jar``` to ```confidentialInfo``` folder by selecting ```TaskExecutor.java``` file. This executable jar file should be created with Eclipse IDE.
 
-14. Run the corresponding driver class to start the WorkflowExecutor.  
+15. Run the corresponding driver class to start the WorkflowExecutor.  
 
-15- You also may export the runnable jar ```YourWorkflowDriver.jar``` into ```DATAVIEW``` folder by selecting ```<YourWorkflowDriver>.java``` file. This executable jar file should be created with Eclipse IDE and should include all the neccessary libraries in the jar. In this way you can use your jar file to execute the workflow with the below command.
+16- You also may export the runnable jar ```YourWorkflowDriver.jar``` into ```DATAVIEW``` folder by selecting ```<YourWorkflowDriver>.java``` file. This executable jar file should be created with Eclipse IDE and should include all the neccessary libraries in the jar. In this way you can use your jar file to execute the workflow with the below command.
 
 ```bash
 java -jar <YourWorkflowDriver>.jar
