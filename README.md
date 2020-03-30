@@ -57,8 +57,8 @@ sudo iptables -t nat -A POSTROUTING -s 10.0.1.0/24 ! -d 10.0.1.0/24 -j MASQUERAD
 
 #Rules to update the FORWARD table for packet forwarding
 
-sudo iptables -I FORWARD -m state -d 10.0.1.0/24 --state NEW,RELATED,ESTABLISHED -j ACCEPT
-sudo iptables -I FORWARD -m state -s 10.0.1.0/24 --state NEW,RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -I FORWARD -m state -d 10.0.0.0/8 --state NEW,RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -I FORWARD -m state -s 10.0.0.0/8 --state NEW,RELATED,ESTABLISHED -j ACCEPT
 
 #You must enable the packet forwarding in the system module unless packet routing does not work.
 sudo sysctl -w net.ipv4.ip_forward=1
