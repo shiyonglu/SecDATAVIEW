@@ -51,11 +51,19 @@ sudo iptables-save > ~/iptables-bak
 sudo iptables -t nat -A PREROUTING ! -s 10.0.1.0/24 -p tcp -m tcp --dport 8000 -j DNAT --to-destination 10.0.1.1:8000
 sudo iptables -t nat -A PREROUTING ! -s 10.0.1.0/24 -p tcp -m tcp --dport 7700 -j DNAT --to-destination 10.0.1.1:7700
 
+# Forward tcp traffic to enclave attestation endpoint
+sudo iptables -t nat -A PREROUTING ! -s 10.0.1.0/24 -p tcp -m tcp --dport 56000 -j DNAT --to-destination 10.0.1.1:56000
+
+# Forward udp traffic to enclave Wireguard endpoint (from the SGX-LKL network setup instructions)
+sudo iptables -t nat -I PREROUTING -p udp -i eth0 --dport 56002 -j DNAT --to-destination 10.0.1.1:56002
+
+
+
 #Rule to update the POSTROUTING table that provides internet access for worker node
 
 sudo iptables -t nat -A POSTROUTING -s 10.0.1.0/24 ! -d 10.0.1.0/24 -j MASQUERADE
 
-#Rules to update the FORWARD table for packet forwarding
+#Rules to update the FORWARD table for packet forwarding shoud be available in both master and work nodes
 
 sudo iptables -I FORWARD -m state -d 10.0.0.0/8 --state NEW,RELATED,ESTABLISHED -j ACCEPT
 sudo iptables -I FORWARD -m state -s 10.0.0.0/8 --state NEW,RELATED,ESTABLISHED -j ACCEPT
