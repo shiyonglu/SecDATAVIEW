@@ -2,8 +2,9 @@ SecDATAVIEW: A Secure Big Data Workflow Management System for Heterogeneous Comp
 ==================================================================================================
 SecDATAVIEW is a secure big data workflow management system compatible with the heterogeneous computing environment. It leverages hardware-assisted TEEs such as Intel SGX and AMD SEV to protect the execution of workflows in the untrusted cloud. 
 The SecDATAVIEW paper is appeared in proceedings of The 35th Annual Computer Security Applications Conference 
-(ACSAC'19), San Juan, Puerto Rico, December, 2019. The first release of SecDATAVIEW implemented the artifacts of the ACSAC'19 paper. Please Download and use the first release that corresponding to ACSAC'19 paper. We have enhanced the SecDATAVIEW with additional security measurements to address the attacks that maninly fake the presence of TEE with leveraging real-time Intel-based SGX attestation and attacks that mainly happen after the workflow execution is finished (e.g., when data owner shutdown VPCs and left the cloud environments). All together is availabe as current release.
- 
+(ACSAC'19), San Juan, Puerto Rico, December, 2019. You may access paper here https://dl.acm.org/doi/10.1145/3359789.3359845
+The first release of SecDATAVIEW implemented the artifacts of the ACSAC'19 paper. You may download and use the first release corresponding to ACSAC'19 paper.
+We have enhanced the SecDATAVIEW with additional security measurements to address the attacks that maninly fake the presence of TEE with leveraging real-time Intel-based SGX attestation and attacks that mainly happen after the workflow execution is finished (e.g., when data owner shutdown VPCs and left the cloud environments). All together is availabe as current edition. A new paper regarding modifications with set of aditional exprimental results is curently under review. We will provide the venue name and the link to the paper later here.   
 
 Prerequisites
 -------------
@@ -32,7 +33,7 @@ ssh <your user name>@<Your SGX server ip>
 Networking support for SGX worker node
 ---------------------------------------
 
-In order for SecDATAVIEW SGX-LKL application to send and receive packets via the network, a TAP interface is needed on the host. Besides, all the network traffic towards the worker node on TCP port 8000 and TCP port 7700 should be forwarded to the TAP interface. Create and configure the TAP interface as follows:
+In order for SecDATAVIEW SGX-LKL application to send and receive packets via the network, a TAP interface is needed on the host. Besides, all the network traffic towards the worker node on TCP port 8000, TCP port 7700, TCP port 56000 and UDP port 56002 should be forwarded to the TAP interface. Create and configure the TAP interface as follows:
 ```bash
 #Lets create a TAP interface
 sudo ip tuntap del dev sgxlkl_tap0 mode tap
@@ -42,7 +43,7 @@ sudo ip addr add dev sgxlkl_tap0 10.0.1.254/24
 ```
 To forward the network packets, the OS iptables should be updated with the following commands: 
 ```bash
-#Lets backup the OS iptables first. Keep this file to restore the iptables rules at a later time
+#Lets backup the OS iptables first. Keep this file to restore the iptables rules at a later time if something got wrong
 
 sudo iptables-save > ~/iptables-bak
 
@@ -50,14 +51,10 @@ sudo iptables-save > ~/iptables-bak
 
 sudo iptables -t nat -A PREROUTING ! -s 10.0.1.0/24 -p tcp -m tcp --dport 8000 -j DNAT --to-destination 10.0.1.1:8000
 sudo iptables -t nat -A PREROUTING ! -s 10.0.1.0/24 -p tcp -m tcp --dport 7700 -j DNAT --to-destination 10.0.1.1:7700
-
 # Forward tcp traffic to enclave attestation endpoint
 sudo iptables -t nat -A PREROUTING ! -s 10.0.1.0/24 -p tcp -m tcp --dport 56000 -j DNAT --to-destination 10.0.1.1:56000
-
 # Forward udp traffic to enclave Wireguard endpoint (from the SGX-LKL network setup instructions)
 sudo iptables -t nat -I PREROUTING -p udp -i eth0 --dport 56002 -j DNAT --to-destination 10.0.1.1:56002
-
-
 
 #Rule to update the POSTROUTING table that provides internet access for worker node
 
@@ -93,7 +90,7 @@ https://linuxconfig.org/allow-ssh-root-login-on-ubuntu-18-04-bionic-beaver-linux
 ```bash
 ssh root@"Your AMD server IP" 
 ```
-5- Download the pre-created SEV disk image <ubuntu.18.0.4.qcow2> from the link below and save the disk image in your SecDATAVIEW Master node.
+5- Download the pre-created SEV disk image <sev-image.qcow2> from the link below and save the disk image in your SecDATAVIEW Master node.
 
  https://www.dropbox.com/sh/hywa7du0sr70nec/AABAyHqD_4tPYXVUNdw2bQAEa?dl=0
 
@@ -151,10 +148,9 @@ sudo apt update
 sudo apt install wireguard
 #From the /machineScript/SGX/WireGuard_VPN_Setup/ folder run wg-sgxlkl-client.sh to setup master node wire guard end point.
 #wgclient.priv and wgclient.pub key files in /WireGuard_VPN_Setup/ folder should be available to wg-sgxlkl-client.sh.
-#Make sure Wire gurad is functioning correctlly by calling into below command.
+#Make sure wire gurad is functioning and correctlly by calling into following status command.
 sudo wg
 ```
-
 
 7- Create a new workspace on your Eclipse IDE
 
@@ -223,7 +219,7 @@ When using the runaable jar file to execute the workflow tree structure bellow m
 > machineScript
 > DATAVIEW
 >         ├── <YourWorkflow>.jar
->         │   ├── confidentialIinfo
+>         │   ├── confidentialInfo
 >         │   ├── workflowDataDir
 >         │   └── workflowLibDir
 ```
@@ -234,17 +230,17 @@ Setting up SecDATAVIEW master node
 
 Update the value of ```SGX_IMG_SRC_FILE```  with the path for sgx-lkl disk image  
 ```java
-public static final String SGX_IMG_SRC_FILE = "/home/ishtiaq/sgxlkl-disk.img.enc";
+public static final String SGX_IMG_SRC_FILE = "/home/mofrad-s/SecDATAVIEW-v3-img.enc";
 ```
 
 Update the value for ```SGX_SCRIPT_SRC_FILE``` relative to your project path
 ```java
-public static final String SGX_SCRIPT_SRC_FILE = "/home/ishtiaq/Desktop/ishtiaq_git/secureDW/machineScript/SGX/sgx-lkl-java-encrypted-dataview.sh";
+public static final String SGX_SCRIPT_SRC_FILE = "/home/mofrad-s/SecDATAVIEW/machineScript/SGX/sgx-lkl-server-remote-launch.sh";
 ```
 
 Update the value of ```AMD_IMG_SRC_FILE```  with the path for AMD SEV disk image 
 ```java
-public static final String AMD_IMG_SRC_FILE = "/home/ishtiaq/ubuntu-18.04.qcow2";
+public static final String AMD_IMG_SRC_FILE = "/home/mofrad-s/sev-image.qcow2";
 ```
 
 Update the value of ```AMD_IMG_DST_FOLDER```  with the path for home folder of your account on the AMD host server  
@@ -254,7 +250,7 @@ public static final String AMD_IMG_DST_FOLDER = "/home/mofrad-s/";
 
 Update the value for ```AMD_SCRIPT_SRC_FILE``` relative to your project path
 ```java
-public static final String AMD_SCRIPT_SRC_FILE = "/home/ishtiaq/Desktop/ishtiaq_git/secureDW/machineScript/AMD/vm1-launch-dataview-sev.sh";
+public static final String AMD_SCRIPT_SRC_FILE = "/home/mofrad-s/SecDATAVIEW/machineScript/AMD/vm1-launch-dataview-sev.sh";
 ```
 
 Update the value of ```AMD_SCRIPT_DST_FOLDER```  with the path for the home folder of your account on the AMD host server  
@@ -284,10 +280,28 @@ public static final String SGX_SERVER_USER_NAME = "ubuntu";
 ```
 Update the value of ```SGX_SERVER_PASSWORD```  with the password of your SGX host server  
 ```java
-public static final String SGX_SERVER_PASSWORD = "acsac19";
+public static final String SGX_SERVER_PASSWORD = "dataview";
 ```
+Update the value of ```SGX_MRENCLVE```  with the expected value 
+```java
+public static final String SGX_MRENCLVE = "9b6cb5e8e67c7ae5bfce1ec9d60363e259261c041f9a46cf284ac1fe714405c1"; 
+```
+Update the value of ```SGX_MRSIGNER```  with the expected value 
+```java
+public static final String SGX_MRSIGNER = "f3b24a591ba692e90bd8a02ca4241a2a73b2128e90041d048fc84cf5fba5d7f6";
+ ```
+You may learn expected SGX_MRENCLVE and SGX_MRSIGNER values by manually running sgx-lkl-server-remote-launch.sh on your SGX hardware.
 
-Update all worker's script file path values in the ```/machineScript/AMD/vm1-launch-dataview-sev.sh```  and  ```/machineScript/SGX/sgx-lkl-java-encrypted-dataview.sh```  based on SGX and AMD Server folders and user credentials settings.  
+Update the value of ```IAS_SPID ```  with the expected value 
+```java
+	public static final String IAS_SPID = "use your Intel SPID here"; //use the same values in the SGX machine script file
+ ```
+  Update the value of ```IAS_SKEY  ```  with the expected value 
+```java
+	public static final String IAS_SKEY = "use one of your Intel Primary or Secondary key here"; 
+ ```
+ 
+Update all worker's script files path values in the ```/machineScript/AMD/vm1-launch-dataview-sev.sh```  and  ```/machineScript/SGX/sgx-lkl-server-remote-launch.sh```  based on your SGX and AMD folders and user credentials settings. For SGX script update the SPID value in the script similar to your IAS_SPID
 
 CryptoTools instructions
 ------------------------
