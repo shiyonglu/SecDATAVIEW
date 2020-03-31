@@ -333,7 +333,7 @@ Sample Workflows
 Import the SecDATAVIEW project into Eclipse IDE and execute the ```DriverDiagnosisNew.java``` file as a driver class for Diagnosis Recommendation Workflow. This driver class is invoked with an SGX and a SEV machines. All necessary inputs and files have been provided in this repository. Since Diagnosis Recommendation Workflow involves six tasks, the first four tasks are assigned to SGX machines, and the rest of the tasks are allocated to a SEV machine. The output file for this workflow will be assigned to the machine that is associated with the last tasks "Evaluation."
 
 
-2- Running Diagnosis Remommendation Workflow: (Example of SGX only workflow)
+2- Running Diagnosis Remommendation Workflow: (Example of SGX only workflows)
 ------------------------------------------------------------------------------------
-1- Import the SecDATAVIEW project into Eclipse IDE and execute the ```DriverDiagnosisSGXonly.java``` file as a driver class for Word Count Workflow. All the tasks associated with this workflow is configured to assign to only one SGX machine. 
+1- Import the SecDATAVIEW project into Eclipse IDE and execute the ```DriverDiagnosisSGXonly.java``` file as the driver class for running the workflow with only one SGX worker. All the tasks associated with this workflow is configured to assign to only one SGX machine. Use ```DriverDiagnosis.java``` file as the driver class to execute the workflow with five SGX workers; all the tasks associated with this workflow is configured to assign between five SGX machines. 
 
