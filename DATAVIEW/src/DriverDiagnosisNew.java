@@ -56,7 +56,7 @@ public class DriverDiagnosisNew {
 		
 		
 		LocalSchedule localSchedule2 = new LocalSchedule();
-		localSchedule2.setVmType("SGX");
+		localSchedule2.setVmType("AMD");
 		
 		localSchedule2.addTaskSchedule(taskSchedule5);
 		localSchedule2.addTaskSchedule(taskSchedule6);
