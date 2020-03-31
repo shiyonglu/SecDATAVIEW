@@ -12,6 +12,10 @@ SecDATAVIEW implemented WCPAC protocol for (1) provisioning and attesting secure
 The detail of the WCPAC will be available in the new paper. Also WCPAC steps are mapped at code level and may be located through comments.
 ![](/WCPAC/WCPAC.png)
 
+Following Video explains WCPAC integration
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/JZJtPtqN_xU/0.jpg)](https://www.youtube.com/watch?v=JZJtPtqN_xU)
+
 Prerequisites
 -------------
 SecDATAVIEW has been tested on Ubuntu 16.04 LTS for SGX worker nodes and 18.04 LTS for SEV worker node. 
