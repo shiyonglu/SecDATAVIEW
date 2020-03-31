@@ -8,7 +8,9 @@ We have enhanced the SecDATAVIEW with additional security measurements to addres
 
 Seqence diagram of new Workflow Code Provisioning and Communication (WCPAC) protocol
 ------------------------------------------------------------------------------------
-![WCPAC Protocol](https://www.dropbox.com/sh/n7nvf0yiapdve4j/AACzaKt9qXXzpv0lrsU7e54Ba?dl=0&preview=WCPAC-TIFS.png)
+SecDATAVIEW implemented WCPAC protocol for (1) provisioning and attesting secure worker nodes, (2) securely provisioning the code for the ```Task Executor``` and workflow tasks on each participating worker node, (3) establishing a secure communication channel between the master node and each worker node, and (4) establishing secure communication channels among worker nodes for secure data transfer.
+The detail of the WCPAC will be available in the new paper. Also WCPAC steps are mapped at code level and may be located through comments.
+![](/WCPAC/WCPAC.png)
 
 Prerequisites
 -------------
