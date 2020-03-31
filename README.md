@@ -152,11 +152,12 @@ git clone https://github.com/shiyonglu/SecDATAVIEW.git
 sudo add-apt-repository ppa:wireguard/wireguard
 sudo apt update
 sudo apt install wireguard
-#From the /machineScript/SGX/WireGuard_VPN_Setup/ folder run wg-sgxlkl-client.sh to setup master node wire guard end point.
+#From the /machineScript/SGX/WireGuard_VPN_Setup/ folder run wg-sgxlkl-client.sh to setup master node wire guard endpoint.
 #wgclient.priv and wgclient.pub key files in /WireGuard_VPN_Setup/ folder should be available to wg-sgxlkl-client.sh.
-#Make sure wire gurad is functioning and correctlly by calling into following status command.
+#Make sure the wire guard is functioning and correctly by calling into following status command and get a result similar to the below image.
 sudo wg
 ```
+![](machineScript/SGX/WireGuard_VPN_Setup/wg-image.png)
 
 7- Create a new workspace on your Eclipse IDE
 
