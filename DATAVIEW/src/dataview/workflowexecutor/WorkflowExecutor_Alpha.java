@@ -227,7 +227,7 @@ public class WorkflowExecutor_Alpha extends WorkflowExecutor {
 		 */
 		Dataview.debugger.logSuccessfulMessage(
 				"Step 5: Starting code provision attestation to securely send the code and data to the remote worker nodes and verify their integrity after transfer");
-//WCPAC.step 16: -Function Call Code Provisioning Attestation
+//WCPAC.step 15: -Function Call Code Provisioning Attestation
 		/*
 		 * 
 		 * Step 5: Securely sends the encrypted Task Executor code and the Code provisioner to the worker node and
