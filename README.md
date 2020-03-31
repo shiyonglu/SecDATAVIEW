@@ -297,7 +297,9 @@ Update the value of ```SGX_MRSIGNER```  with the expected value
 ```java
 public static final String SGX_MRSIGNER = "f3b24a591ba692e90bd8a02ca4241a2a73b2128e90041d048fc84cf5fba5d7f6";
  ```
-You may learn expected SGX_MRENCLVE and SGX_MRSIGNER values by manually running sgx-lkl-server-remote-launch.sh on your SGX hardware.
+You may learn expected SGX_MRENCLVE and SGX_MRSIGNER values by manually running sgx-lkl-server-remote-launch.sh on your SGX hardware similar to below image.
+
+![](machineScript/SGX/mrenclave-signervalues.png)
 
 Update the value of ```IAS_SPID ```  with the expected value 
 ```java
