@@ -1,10 +1,10 @@
 SecDATAVIEW: A Secure Big Data Workflow Management System for Heterogeneous Computing Environments
 ==================================================================================================
 SecDATAVIEW is a secure big data workflow management system compatible with the heterogeneous computing environment. It leverages hardware-assisted TEEs such as Intel SGX and AMD SEV to protect the execution of workflows in the untrusted cloud. 
-The SecDATAVIEW paper is appeared in proceedings of The 35th Annual Computer Security Applications Conference 
-(ACSAC'19), San Juan, Puerto Rico, December, 2019. You may access paper here https://dl.acm.org/doi/10.1145/3359789.3359845
+The SecDATAVIEW paper has appeared in proceedings of The 35th Annual Computer Security Applications Conference 
+(ACSAC'19), San Juan, Puerto Rico, December 2019. You may access paper here https://dl.acm.org/doi/10.1145/3359789.3359845
 The first release of SecDATAVIEW implemented the artifacts of the ACSAC'19 paper. You may download and use the first release corresponding to ACSAC'19 paper.
-We have enhanced the SecDATAVIEW with additional security measurements to address the attacks that maninly fake the presence of TEE with leveraging real-time Intel-based SGX attestation and attacks that mainly happen after the workflow execution is finished (e.g., when data owner shutdown VPCs and left the cloud environments). All together is availabe as current edition. A new paper regarding modifications with set of aditional exprimental results is curently under review. We will provide the venue name and the link to the paper later here.   
+We have enhanced the SecDATAVIEW with additional security measurements to address the attacks that mainly fake the presence of TEE with leveraging real-time Intel-based SGX attestation and attacks that mainly happen after the workflow execution is finished (e.g., when data owner shutdown VPCs and left the cloud environments). All together is available as the current edition. A new paper regarding modifications with a set of additional experimental results is currently under review. We will provide the venue name and the link to the paper later here.   
 
 Seqence diagram of new Workflow Code Provisioning and Communication (WCPAC) protocol
 ------------------------------------------------------------------------------------
@@ -326,7 +326,7 @@ Sample Workflows
 Import the SecDATAVIEW project into Eclipse IDE and execute the ```DriverDiagnosisNew.java``` file as a driver class for Diagnosis Recommendation Workflow. This driver class is invoked with an SGX and a SEV machines. All necessary inputs and files have been provided in this repository. Since Diagnosis Recommendation Workflow involves six tasks, the first four tasks are assigned to SGX machines, and the rest of the tasks are allocated to a SEV machine. The output file for this workflow will be assigned to the machine that is associated with the last tasks "Evaluation."
 
 
-2- Running Diagnosis remommendation Workflow: (Example of SGX only workflow)
+2- Running Diagnosis Remommendation Workflow: (Example of SGX only workflow)
 ------------------------------------------------------------------------------------
 1- Import the SecDATAVIEW project into Eclipse IDE and execute the ```DriverDiagnosisSGXonly.java``` file as a driver class for Word Count Workflow. All the tasks associated with this workflow is configured to assign to only one SGX machine. 
 
