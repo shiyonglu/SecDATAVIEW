@@ -6,6 +6,10 @@ The SecDATAVIEW paper is appeared in proceedings of The 35th Annual Computer Sec
 The first release of SecDATAVIEW implemented the artifacts of the ACSAC'19 paper. You may download and use the first release corresponding to ACSAC'19 paper.
 We have enhanced the SecDATAVIEW with additional security measurements to address the attacks that maninly fake the presence of TEE with leveraging real-time Intel-based SGX attestation and attacks that mainly happen after the workflow execution is finished (e.g., when data owner shutdown VPCs and left the cloud environments). All together is availabe as current edition. A new paper regarding modifications with set of aditional exprimental results is curently under review. We will provide the venue name and the link to the paper later here.   
 
+Seqence diagram of new Workflow Code Provisioning and Communication (WCPAC) protocol
+------------------------------------------------------------------------------------
+![WCPAC Protocol](https://www.dropbox.com/sh/n7nvf0yiapdve4j/AACzaKt9qXXzpv0lrsU7e54Ba?dl=0&preview=WCPAC-TIFS.png)
+
 Prerequisites
 -------------
 SecDATAVIEW has been tested on Ubuntu 16.04 LTS for SGX worker nodes and 18.04 LTS for SEV worker node. 
@@ -294,11 +298,11 @@ You may learn expected SGX_MRENCLVE and SGX_MRSIGNER values by manually running 
 
 Update the value of ```IAS_SPID ```  with the expected value 
 ```java
-	public static final String IAS_SPID = "use your Intel SPID here"; //use the same values in the SGX machine script file
+public static final String IAS_SPID = "use your Intel SPID here"; //use the same values in the SGX machine script file
  ```
   Update the value of ```IAS_SKEY  ```  with the expected value 
 ```java
-	public static final String IAS_SKEY = "use one of your Intel Primary or Secondary key here"; 
+public static final String IAS_SKEY = "use one of your Intel Primary or Secondary key here"; 
  ```
  
 Update all worker's script files path values in the ```/machineScript/AMD/vm1-launch-dataview-sev.sh```  and  ```/machineScript/SGX/sgx-lkl-server-remote-launch.sh```  based on your SGX and AMD folders and user credentials settings. For SGX script update the SPID value in the script similar to your IAS_SPID
@@ -320,7 +324,7 @@ Sample Workflows
 Import the SecDATAVIEW project into Eclipse IDE and execute the ```DriverDiagnosisNew.java``` file as a driver class for Diagnosis Recommendation Workflow. This driver class is invoked with an SGX and a SEV machines. All necessary inputs and files have been provided in this repository. Since Diagnosis Recommendation Workflow involves six tasks, the first four tasks are assigned to SGX machines, and the rest of the tasks are allocated to a SEV machine. The output file for this workflow will be assigned to the machine that is associated with the last tasks "Evaluation."
 
 
-2- Running Word Count Workflow (Map/Reduce) Workflow: (Example of SGX only workflow)
+2- Running Diagnosis remommendation Workflow: (Example of SGX only workflow)
 ------------------------------------------------------------------------------------
-1- Import the SecDATAVIEW project into Eclipse IDE and execute the ```DriverMapReduce.java``` file as a driver class for Word Count Workflow. All the tasks associated with this workflow is configured to assign to only one SGX machine. 
+1- Import the SecDATAVIEW project into Eclipse IDE and execute the ```DriverDiagnosisSGXonly.java``` file as a driver class for Word Count Workflow. All the tasks associated with this workflow is configured to assign to only one SGX machine. 
 
