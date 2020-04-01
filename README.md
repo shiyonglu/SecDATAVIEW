@@ -309,10 +309,11 @@ Update the value of ```IAS_SPID ```  with the expected value
 ```java
 public static final String IAS_SPID = "use your Intel SPID here"; //use the same values in the SGX machine script file
  ```
-  Update the value of ```IAS_SKEY  ```  with the expected value 
+Update the value of ```IAS_SKEY  ```  with the expected value 
 ```java
 public static final String IAS_SKEY = "use one of your Intel Primary or Secondary key here"; 
  ```
+Update the path of ```bashCommand``` and ```env``` strings for ```executeSGXremoteControl``` and  ```executeSGXremoteAttestation``` methods in the VMProvisionerSGX class and with the path to SGX-LKL folder on the master. Also, update the path to ```secdataview.app.conf``` file in the ```executeSGXremoteControl``` method. The file is located in ```/SecDATAVIEW/machineScript/SGX/secdataview.app.conf``` in this repository. 
  
 Update all worker's script files path values in the ```/machineScript/AMD/vm1-launch-dataview-sev.sh```  and  ```/machineScript/SGX/sgx-lkl-server-remote-launch.sh```  based on your SGX and AMD folders and user credentials settings. For SGX script update the SPID value in the script similar to your IAS_SPID
 
