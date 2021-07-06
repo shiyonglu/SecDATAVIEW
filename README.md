@@ -338,7 +338,24 @@ Import the SecDATAVIEW project into Eclipse IDE and execute the ```DriverDiagnos
 -----------------------------------------------------------------------------
 1- Import the SecDATAVIEW project into Eclipse IDE and execute the ```DriverDiagnosisSGXonly.java``` file as the driver class for running the workflow with only one SGX worker. All the tasks associated with this workflow is configured to assign to only one SGX machine. Use ```DriverDiagnosis.java``` file as the driver class to execute the workflow with five SGX workers; all the tasks associated with this workflow is configured to assign between five SGX machines. 
 
-3- Journal Reproduce Source Code:
+3- Journal Exprimental Source Codes, the Scenarios and Parameter Setup:
 ---------------------------------
-Source code for experimental Workflows and their data generator that have been used to produce results in the Journal version of the SecDATAVIEW system is available in the JournalReproduce-SourceCode folder. 
+Source code for experimental Workflows and their data generator that have been used to produce results in the Journal version of the SecDATAVIEW system is available in the "JournalReproduce-SourceCode" folder.
+
+Journal paper section 4.1.1. The Diagnosis Recommendation workflow:
+The raw textual dataset can be generated through the dataset generator programm. For each of the scenarios we used 75% random dataset for training and the rest of them are for testing. The corresponding parameters for various training and testing data size are enlisted in Figure 5 (a) legends in the paper.  
+
+Journal paper section 4.1.2. The Word Count (Map-Reduce) workflow:
+The dataset for various size can be generated through the source code that we provided. In this experiment the experiment conductor needs to select the word length and the total number of words in the provided code and then execute the workflow. The corresponding parameters for various size are enlisted in Figure 5 (b) legends in the paper. 
+
+Journal paper section 4.1.3. The Distributed K-means workflow:
+In order to conduct the experiment, we generated various points (2-dimensional) dataset through the source code. To initiate the execution, we need to put on various points. When we obtain the corresponding dataset, we can feed this to our publicly available distributed k-means workflow. The corresponding parameters are enlisted in Figure 5 (c) legends in the paper. 
+
+Journal paper section 4.1.4. The MONTAGE workflow:
+In order to conduct the experiment, we randomly generate integers and the input should be the total number of integers that we need to generate. The corresponding parameters are enlisted in Figure 6 (a) legends in the paper. 
+
+Journal paper section 4.1.5. The Neural Network (NN) workflow:
+To replicate the experiment result, the source code for NN network workflow has been given. In order to vary the result, we need to specify the total number of nodes and the rest of the steps are fully automated through the workflow source code. The corresponding parameters are enlisted in Figure 6 (b) legends in the paper. 
+
+
 
